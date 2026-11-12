@@ -7,6 +7,7 @@ import {
 } from "remotion";
 import TL from "./timeline.json";
 import TL2 from "./timeline-cap2.json";
+import TL3 from "./timeline-cap3.json";
 import { Grain, Vignette } from "../components/Layers";
 import { FashionCharacter } from "./Fashion";
 
@@ -19,8 +20,8 @@ const D = {
   out: Easing.bezier(0.16, 1, 0.3, 1),
   inOut: Easing.bezier(0.83, 0, 0.17, 1),
 };
-type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei";
-type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh";
+type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei" | "lia" | "bruno" | "shin" | "tess" | "sora";
+type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh" | "sad" | "blush";
 type Line = { who: string; text: string; mood?: string; fx?: string; start: number; dur: number; audio: string;
   with?: string; thought?: boolean; enter?: string[]; move?: Record<string, number>; pose?: Record<string, string>; moods?: Record<string, string> };
 type Scene = { id: string; start: number; end: number; lines: Line[] };
@@ -28,6 +29,8 @@ const SCENES = TL.scenes as Scene[];
 export const DRAMA_TOTAL_S: number = TL.total;
 const SCENES2 = TL2.scenes as Scene[];
 export const DRAMA2_TOTAL_S: number = TL2.total;
+const SCENES3 = TL3.scenes as Scene[];
+export const DRAMA3_TOTAL_S: number = TL3.total;
 
 const CAST: Record<Who, { name: string; hair: string; top: string; pants: string; tag: string }> = {
   miki: { name: "Miki", hair: "#2b2340", top: "#ff7eb6", pants: "#3d3a5c", tag: "#ff7eb6" },
@@ -36,6 +39,11 @@ const CAST: Record<Who, { name: string; hair: string; top: string; pants: string
   hana: { name: "Hana", hair: "#b79cff", top: "#ffd23f", pants: "#4b4470", tag: "#b79cff" },
   yui: { name: "Yui", hair: "#7a4a2a", top: "#9b6bd6", pants: "#36324f", tag: "#9b6bd6" },
   mei: { name: "Mei", hair: "#1f1a1a", top: "#ef4b4b", pants: "#2e2a40", tag: "#ef4b4b" },
+  lia: { name: "Lía", hair: "", top: "", pants: "", tag: "#b45ad1" },
+  bruno: { name: "Bruno", hair: "", top: "", pants: "", tag: "#c0392b" },
+  shin: { name: "Shin", hair: "", top: "", pants: "", tag: "#3a3a44" },
+  tess: { name: "Tess", hair: "", top: "", pants: "", tag: "#6b7b5a" },
+  sora: { name: "Sora", hair: "", top: "", pants: "", tag: "#5b4b6e" },
 };
 
 // ---------------- helpers ----------------
@@ -224,6 +232,45 @@ const RoomBG: React.FC = () => (<svg width={1080} height={1920} style={{ positio
   <rect x={610} y={1390} width={130} height={100} rx={14} fill="#34b36b" stroke={D.ink} strokeWidth={8} />
 </svg>);
 
+const TerraceBG: React.FC = () => (<svg width={1080} height={1920} style={{ position: "absolute" }}>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3b3a7a" /><stop offset=".45" stopColor="#c86b8a" /><stop offset=".75" stopColor="#ffb36b" /></linearGradient></defs>
+  <rect width={1080} height={1920} fill="url(#sky)" />
+  <circle cx={760} cy={1040} r={120} fill="#ffd9a0" opacity={0.9} />
+  {[[0, 980, 140], [130, 900, 110], [230, 1010, 160], [380, 940, 120], [500, 1060, 200], [690, 960, 130], [820, 1000, 150], [960, 920, 120]].map(([x, y, w], i) =>
+    <rect key={i} x={x} y={y} width={w} height={1300 - y} fill="#4a3a6a" opacity={0.85} />)}
+  {[[40, 1020], [170, 950], [270, 1060], [560, 1100], [860, 1040]].map(([x, y], i) => <rect key={i} x={x} y={y} width={18} height={24} fill="#ffe08a" />)}
+  <rect x={0} y={1180} width={1080} height={16} fill="#2b2440" />
+  {Array.from({ length: 19 }).map((_, i) => <rect key={i} x={i * 60} y={1180} width={10} height={260} fill="#2b2440" />)}
+  <rect x={0} y={1300} width={1080} height={10} fill="#2b2440" />
+  <rect x={0} y={1440} width={1080} height={480} fill="#8a6a5a" />
+  {Array.from({ length: 6 }).map((_, i) => <rect key={i} x={0} y={1460 + i * 80} width={1080} height={4} fill="#6f5446" />)}
+  <rect x={640} y={1500} width={360} height={30} rx={6} fill="#6b4a32" /><rect x={660} y={1530} width={20} height={90} fill="#3a2a22" /><rect x={960} y={1530} width={20} height={90} fill="#3a2a22" />
+</svg>);
+const CafeBG: React.FC = () => (<svg width={1080} height={1920} style={{ position: "absolute" }}>
+  <rect width={1080} height={1920} fill="#f3e3c9" />
+  <rect y={0} width={1080} height={560} fill="#e7cfa9" />
+  {[90, 420, 750].map((x) => <g key={x}><rect x={x} y={640} width={240} height={300} rx={14} fill="#26306b" /><path d={`M${x + 120} 640v300M${x} 790h240`} stroke="#f3e3c9" strokeWidth={10} />
+    <circle cx={x + 60} cy={700} r={4} fill="#fff" /><circle cx={x + 180} cy={860} r={3} fill="#fff" /></g>)}
+  <rect x={0} y={1180} width={1080} height={740} fill="#c9a27a" />
+  {Array.from({ length: 10 }).map((_, i) => <path key={i} d={`M${i * 140 - 200} 1920 L${540 + (i - 4.5) * 70} 1180`} stroke="#b58e66" strokeWidth={4} />)}
+  {[160, 920].map((x) => <g key={x}><circle cx={x} cy={300} r={60} fill="#ffeab5" opacity={0.6} /><rect x={x - 4} y={0} width={8} height={240} fill="#5a4632" /><path d={`M${x - 70} 300 L${x - 40} 230 L${x + 40} 230 L${x + 70} 300Z`} fill="#ef4b4b" /></g>)}
+</svg>);
+const CafeTable: React.FC<{ pizza: boolean }> = ({ pizza }) => {
+  const { f, fps } = useT();
+  const p = spring({ frame: pizza ? f : 0, fps, config: D.pop });
+  return (<svg width={1080} height={1920} style={{ position: "absolute" }}>
+    <rect x={-20} y={1500} width={1120} height={260} fill="#8a4424" />
+    <rect x={-20} y={1470} width={1120} height={60} rx={14} fill="#c46a3c" />
+    <rect x={-20} y={1760} width={1120} height={20} fill="#00000033" />
+    {[200, 380, 700, 880].map((x) => <g key={x}><rect x={x - 26} y={1420} width={52} height={62} rx={8} fill="#fff" opacity={0.9} /><rect x={x - 22} y={1436} width={44} height={40} rx={6} fill="#ffb347" opacity={0.8} /></g>)}
+    {pizza && <g transform={`translate(540 1480) scale(${p * 1.3})`}>
+      <ellipse rx={150} ry={46} fill="#e8b36a" /><ellipse rx={132} ry={38} fill="#e04a2f" /><ellipse rx={118} ry={32} fill="#ffd36b" />
+      {[[-60, -8], [-10, 10], [50, -12], [80, 8], [-90, 6], [20, -18]].map(([x, y], i) => <ellipse key={i} cx={x} cy={y} rx={14} ry={6} fill="#b8322a" />)}
+      <path d="M0 -32 L0 32 M-118 0 L118 0 M-84 -22 L84 22 M84 -22 L-84 22" stroke="#e8b36a" strokeWidth={3} opacity={0.7} />
+    </g>}
+  </svg>);
+};
+
 // ---------------- effects ----------------
 const IceCube: React.FC<{ x: number; y: number }> = ({ x, y }) => {
   const { f, fps } = useT(); const p = spring({ frame: f, fps, config: D.pop });
@@ -252,8 +299,8 @@ const Bonk: React.FC<{ x: number; y: number }> = ({ x, y }) => {
   })}</>);
 };
 
-type Spot = { who: Who; x: number; flip?: boolean };
-const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode; defaultMood?: Partial<Record<Who, Mood>>; size?: number }> = ({ scene, cast, bg, defaultMood = {}, size = 1.22 }) => {
+type Spot = { who: Who; x: number; flip?: boolean; y?: number; s?: number; layer?: number };
+const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode; defaultMood?: Partial<Record<Who, Mood>>; size?: number; mid?: (pizza: boolean) => React.ReactNode }> = ({ scene, cast, bg, defaultMood = {}, size = 1.22, mid }) => {
   const { f, fps, t } = useT(); const tAbs = scene.start + t;
   const line = activeLine(scene.lines, tAbs);
   const ease = (from: number, to: number, at: number, d = 0.5) => interpolate(tAbs, [at, at + d], [from, to], { ...clamp, easing: D.inOut });
@@ -291,21 +338,25 @@ const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode;
   const zOut = standL ? standL.start + standL.dur * 0.5 : Infinity;
   const zoom = Number.isFinite(zIn) ? interpolate(tAbs, [zIn, zIn + 0.5, zOut, zOut + 0.5], [1, 2.1, 2.1, 1], { ...clamp, easing: D.inOut }) : 1;
   const focus = fallL ? Object.keys(fallL.pose!) : [];
+  const spotOf = (who: string) => cast.find((k) => k.who === who);
   const xOf = (who: string) => { const c = cast.find((k) => k.who === who); return c ? posX(c) + enterOffset(c.who) : 540; };
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: `${focus.length ? focus.reduce((a, w) => a + xOf(w), 0) / focus.length : 540}px ${1760 - 860 * size}px` }}>
       <AbsoluteFill style={{ transform: `translateX(${camX}px) scale(1.03)` }}>{bg}</AbsoluteFill>
       <AbsoluteFill style={{ transform: `translateX(${camX * 1.6}px)` }}>
-        {cast.map((c, i) => {
+        {[0, 1].map((layer) => (<React.Fragment key={layer}>
+        {cast.filter((c) => (c.layer ?? 0) === layer).map((c, i) => {
           const el = enterLine(c.who); if (el && tAbs < el.start - 0.4) return null;
           const talking = !!line && (line.who === c.who || line.with === c.who) && !line.thought && tAbs < line.start + line.dur;
           let mood: Mood = lastSaid[c.who] ?? defaultMood[c.who] ?? "talk";
           if (ending && (c.who === "miki" || c.who === "hana") && scene.id === "room") mood = "laugh";
-          return <FashionCharacter key={c.who} who={c.who} x={posX(c) + enterOffset(c.who) + exitX(c.who)} y={1760} scale={size} mood={mood} talking={talking} flip={c.flip} enterDelay={el ? Math.round((el.start - 0.4 - scene.start) * fps) : i * 5} tilt={tilt(c.who, c.flip)} />;
+          return <FashionCharacter key={c.who} who={c.who} x={posX(c) + enterOffset(c.who) + exitX(c.who)} y={c.y ?? 1760} scale={c.s ?? size} mood={mood} talking={talking} flip={c.flip} enterDelay={el ? Math.round((el.start - 0.4 - scene.start) * fps) : i * 5} tilt={tilt(c.who, c.flip)} />;
         })}
+        </React.Fragment>))}
+        {mid?.(scene.lines.some((l) => l.fx === "pizza" && l.start <= tAbs))}
         {line?.fx === "ice" && <Sequence from={Math.round((line.start - scene.start) * fps)} layout="none"><IceCube x={cast.find((c) => c.who === "ren")!.x} y={1760 - 790 * size} /></Sequence>}
-        {line?.fx === "hearts" && <Hearts x={xOf(line.who)} y={1760 - 760 * size} />}
+        {line?.fx === "hearts" && <Hearts x={xOf(line.who)} y={(spotOf(line.who)?.y ?? 1760) - 760 * (spotOf(line.who)?.s ?? size)} />}
         {line?.fx === "bonk" && <Bonk x={xOf(line.who)} y={1760 - 900 * size} />}
       </AbsoluteFill>
       </AbsoluteFill>
@@ -390,6 +441,32 @@ export const Internado2: React.FC = () => {
       {seq("back", <DialogueScene scene={by("back")} bg={<RoomBG />} defaultMood={{ ren: "cold" }}
         cast={[{ who: "hana", x: 200 }, { who: "miki", x: 420 }, { who: "kai", x: 660, flip: true }, { who: "ren", x: 890, flip: true }]} size={1.12} />)}
       {seq("end", <TitleCard scene={by("end")} top="Vida en el internado" big="Continuará..." sub="Capítulo 3 pronto" showNarr={false} />)}
+      <Grain />
+      <Vignette />
+    </AbsoluteFill>
+  );
+};
+
+export const Internado3: React.FC = () => {
+  const { fps } = useVideoConfig();
+  const F = (s: number) => Math.round(s * fps);
+  const by = (id: string) => SCENES3.find((s) => s.id === id)!;
+  const seq = (id: string, el: React.ReactNode) => { const s = by(id); return <Sequence key={id} from={F(s.start)} durationInFrames={F(s.end - s.start)}>{el}</Sequence>; };
+  const back = { y: 1500, s: 0.66, layer: 0 }; const front = { y: 1920, s: 0.86, layer: 1 };
+  return (
+    <AbsoluteFill style={{ background: "#fff" }}>
+      {seq("title", <TitleCard scene={by("title")} top="Capítulo 3" big="Conociéndonos" sub="Parte 2" showNarr />)}
+      {seq("terrace", <DialogueScene scene={by("terrace")} bg={<TerraceBG />} defaultMood={{ ren: "cold" }}
+        cast={[{ who: "kai", x: 320 }, { who: "ren", x: 760, flip: true }]} size={1.22} />)}
+      {seq("cafe", <DialogueScene scene={by("cafe")} bg={<CafeBG />} defaultMood={{ ren: "cold", shin: "cold", sora: "cold", tess: "cold" }}
+        mid={(pizza) => <CafeTable pizza={pizza} />}
+        cast={[
+          { who: "sora", x: 110, ...back }, { who: "yui", x: 290, ...back }, { who: "mei", x: 470, ...back },
+          { who: "shin", x: 650, ...back, flip: true }, { who: "tess", x: 830, ...back, flip: true }, { who: "bruno", x: 990, ...back, flip: true },
+          { who: "lia", x: 130, ...front }, { who: "hana", x: 340, ...front }, { who: "miki", x: 545, ...front },
+          { who: "kai", x: 750, ...front, flip: true }, { who: "ren", x: 950, ...front, flip: true },
+        ]} />)}
+      {seq("end", <TitleCard scene={by("end")} top="Vida en el internado" big="Continuará..." sub="Capítulo 4 pronto" showNarr={false} />)}
       <Grain />
       <Vignette />
     </AbsoluteFill>

@@ -1,0 +1,375 @@
+{
+ "scenes": [
+  {
+   "id": "title",
+   "start": 0,
+   "end": 6.307,
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Mientras tanto, afuera en la terraza...",
+     "start": 3.0,
+     "dur": 2.457,
+     "audio": "drama/cap3/l0.wav"
+    }
+   ]
+  },
+  {
+   "id": "terrace",
+   "start": 6.307,
+   "end": 46.929,
+   "lines": [
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "Oye, Ren. Hana es muy linda, ¿no crees?",
+     "start": 6.907,
+     "dur": 3.256,
+     "audio": "drama/cap3/l1.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "blush",
+     "thought": true,
+     "fx": "hearts",
+     "text": "Sí lo es... me encanta su sonrisa. ¿Pero qué estoy pensando? Nunca me había sentido así por una chica.",
+     "start": 10.513,
+     "dur": 8.11,
+     "audio": "drama/cap3/l2.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "talk",
+     "text": "¡Oye, Ren!",
+     "start": 18.974,
+     "dur": 0.966,
+     "audio": "drama/cap3/l3.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "¿Qué quieres, Kai?",
+     "start": 20.29,
+     "dur": 1.336,
+     "audio": "drama/cap3/l4.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "talk",
+     "text": "Te pregunté si te parece linda Hana.",
+     "start": 21.976,
+     "dur": 2.06,
+     "audio": "drama/cap3/l5.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Ella es solo una molestia.",
+     "start": 24.386,
+     "dur": 1.743,
+     "audio": "drama/cap3/l6.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "Bueno, dejemos de hablar de chicas. ¿Cuándo empiezan las clases?",
+     "start": 26.48,
+     "dur": 4.069,
+     "audio": "drama/cap3/l7.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "En dos días. Y todos vamos a estar en la misma clase.",
+     "start": 30.898,
+     "dur": 3.816,
+     "audio": "drama/cap3/l8.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "¡Qué bien! Así podré ver a Yui.",
+     "start": 35.064,
+     "dur": 2.026,
+     "audio": "drama/cap3/l9.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "happy",
+     "text": "¿Te gusta Yui?",
+     "start": 37.44,
+     "dur": 0.893,
+     "audio": "drama/cap3/l10.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "blush",
+     "fx": "hearts",
+     "text": "T-t-tal v-vez...",
+     "start": 38.683,
+     "dur": 1.211,
+     "audio": "drama/cap3/l11.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Mejor vámonos. Está oscureciendo y nos esperan para cenar.",
+     "start": 40.244,
+     "dur": 4.42,
+     "audio": "drama/cap3/l12.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "¡Sí, vamos!",
+     "start": 45.015,
+     "dur": 1.065,
+     "audio": "drama/cap3/l13.wav"
+    }
+   ]
+  },
+  {
+   "id": "cafe",
+   "start": 46.929,
+   "end": 108.27,
+   "lines": [
+    {
+     "who": "kai",
+     "mood": "happy",
+     "enter": [
+      "kai",
+      "ren"
+     ],
+     "text": "¡Hola, Miki! ¡Hola, Hana!",
+     "start": 47.529,
+     "dur": 2.309,
+     "audio": "drama/cap3/l14.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Hola, Kai. Hola, Ren.",
+     "start": 50.189,
+     "dur": 2.346,
+     "audio": "drama/cap3/l15.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Veo que ya te calmaste.",
+     "start": 52.884,
+     "dur": 1.537,
+     "audio": "drama/cap3/l16.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "talk",
+     "text": "Oye, Hana... ¿quiénes son los chicos que se sentaron a tu lado?",
+     "start": 54.772,
+     "dur": 3.652,
+     "audio": "drama/cap3/l17.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "talk",
+     "text": "El pelirrojo es Kai, y el de pelo negro es Ren.",
+     "start": 58.774,
+     "dur": 3.484,
+     "audio": "drama/cap3/l18.wav"
+    },
+    {
+     "who": "bruno",
+     "mood": "happy",
+     "enter": [
+      "bruno"
+     ],
+     "text": "Oigan, ¿qué tanto se secretean?",
+     "start": 62.608,
+     "dur": 2.03,
+     "audio": "drama/cap3/l19.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "¡Nada! Les presento: él es Kai, y él es Ren.",
+     "start": 64.988,
+     "dur": 3.937,
+     "audio": "drama/cap3/l20.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "happy",
+     "text": "Mucho gusto, yo soy Lía.",
+     "start": 69.275,
+     "dur": 1.818,
+     "audio": "drama/cap3/l21.wav"
+    },
+    {
+     "who": "bruno",
+     "mood": "happy",
+     "text": "Yo soy Bruno.",
+     "start": 71.444,
+     "dur": 0.899,
+     "audio": "drama/cap3/l22.wav"
+    },
+    {
+     "who": "shin",
+     "mood": "cold",
+     "text": "Yo soy Shin.",
+     "start": 72.692,
+     "dur": 1.029,
+     "audio": "drama/cap3/l23.wav"
+    },
+    {
+     "who": "mei",
+     "mood": "happy",
+     "text": "¡Yo soy Mei!",
+     "start": 74.071,
+     "dur": 0.789,
+     "audio": "drama/cap3/l24.wav"
+    },
+    {
+     "who": "yui",
+     "mood": "blush",
+     "text": "Y-yo soy Yui.",
+     "start": 75.21,
+     "dur": 1.172,
+     "audio": "drama/cap3/l25.wav"
+    },
+    {
+     "who": "sora",
+     "mood": "angry",
+     "text": "Y yo soy Sora. El primo de Yui.",
+     "start": 76.733,
+     "dur": 2.653,
+     "audio": "drama/cap3/l26.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Bueno, basta de presentaciones. ¿Qué tal si pedimos una pizza?",
+     "start": 79.736,
+     "dur": 4.375,
+     "audio": "drama/cap3/l27.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "with": "lia",
+     "text": "¡Sí, pizza!",
+     "start": 84.461,
+     "dur": 1.041,
+     "audio": "drama/cap3/l28.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "laugh",
+     "fx": "pizza",
+     "text": "¡Mmm, qué deliciosa!",
+     "start": 85.851,
+     "dur": 1.314,
+     "audio": "drama/cap3/l29.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Sí, está deliciosa.",
+     "start": 87.515,
+     "dur": 1.605,
+     "audio": "drama/cap3/l30.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "laugh",
+     "text": "¡Nunca había probado una pizza tan rica en mi vida!",
+     "start": 89.47,
+     "dur": 2.869,
+     "audio": "drama/cap3/l31.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "talk",
+     "with": "miki",
+     "text": "Lía, no exageres.",
+     "start": 92.69,
+     "dur": 1.686,
+     "audio": "drama/cap3/l32.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "happy",
+     "text": "Ya sé, ¡pero está deliciosa!",
+     "start": 94.725,
+     "dur": 1.784,
+     "audio": "drama/cap3/l33.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "with": "mei",
+     "text": "¡Lía!",
+     "start": 96.86,
+     "dur": 0.475,
+     "audio": "drama/cap3/l34.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "nervous",
+     "text": "¿Qué?",
+     "start": 97.684,
+     "dur": 0.197,
+     "audio": "drama/cap3/l35.wav"
+    },
+    {
+     "who": "tess",
+     "mood": "cold",
+     "text": "No hables con la boca llena.",
+     "start": 98.232,
+     "dur": 1.616,
+     "audio": "drama/cap3/l36.wav"
+    },
+    {
+     "who": "lia",
+     "mood": "happy",
+     "text": "¡Ah, okay!",
+     "start": 100.197,
+     "dur": 0.991,
+     "audio": "drama/cap3/l37.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "with": "hana",
+     "text": "Bueno, nosotros ya nos vamos.",
+     "start": 101.538,
+     "dur": 2.544,
+     "audio": "drama/cap3/l38.wav"
+    },
+    {
+     "who": "mei",
+     "mood": "happy",
+     "with": "yui",
+     "text": "¡Nos vemos en clases!",
+     "start": 104.433,
+     "dur": 1.312,
+     "audio": "drama/cap3/l39.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "¡Sí, hasta luego!",
+     "start": 106.094,
+     "dur": 1.325,
+     "audio": "drama/cap3/l40.wav"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 108.27,
+   "end": 111.87,
+   "lines": []
+  }
+ ],
+ "total": 111.87
+}

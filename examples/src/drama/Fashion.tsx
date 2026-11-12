@@ -2,7 +2,7 @@
 import React from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
 
-export type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei";
+export type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei" | "lia" | "bruno" | "shin" | "tess" | "sora";
 export type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh" | "sad" | "blush";
 
 type Look = {
@@ -24,6 +24,16 @@ export const LOOKS: Record<Who, Look> = {
     bottom: "skirt", bottomColor: "#c9d6dc", legs: "#253a48", shoes: "#8a5a36", boots: true, scarf: "#5fc6cf" },
   mei: { skin: "#f5d0b5", hair: "#2a1d1d", hairStyle: "bob", shirt: "#f2c641", jacket: "#e6e3de",
     bottom: "skirt", bottomColor: "#f2c641", shoes: "#e0a63a" },
+  lia: { skin: "#f9dcc4", hair: "#f2cf6b", hairStyle: "waves", shirt: "#b45ad1", jacket: undefined,
+    bottom: "skirt", bottomColor: "#3a3150", legs: "#f9dcc4", shoes: "#b45ad1" },
+  bruno: { skin: "#d9a37c", hair: "#5b3a22", hairStyle: "messy", shirt: "#8a8f99", jacket: "#c0392b",
+    bottom: "pants", bottomColor: "#3b4a63", shoes: "#e8e8e8" },
+  shin: { skin: "#f6e6dc", hair: "#121218", hairStyle: "swept", shirt: "#1c1c22", jacket: "#e9e7e3",
+    bottom: "pants", bottomColor: "#1c1c22", shoes: "#121218" },
+  tess: { skin: "#eec39f", hair: "#d8b36a", hairStyle: "pony", shirt: "#2b4a7a", jacket: "#6b7b5a",
+    bottom: "pants", bottomColor: "#5a4632", shoes: "#3a2a22", boots: true },
+  sora: { skin: "#f1d2bb", hair: "#3b2a24", hairStyle: "pony", shirt: "#f0ede6", jacket: "#5b4b6e",
+    bottom: "pants", bottomColor: "#2c2a35", shoes: "#2c2a35" },
 };
 
 const shade = "rgba(20,15,40,0.18)";
@@ -50,8 +60,8 @@ const HairFront: React.FC<{ l: Look }> = ({ l }) => {
   }
 };
 
-const IRIS: Record<Who, string> = { miki: "#3b2a22", ren: "#1e2333", kai: "#3f7a52", hana: "#6a4fa8", yui: "#5a3a26", mei: "#2e2420" };
-const GIRL: Record<Who, boolean> = { miki: true, ren: false, kai: false, hana: true, yui: true, mei: true };
+const IRIS: Record<Who, string> = { miki: "#3b2a22", ren: "#1e2333", kai: "#3f7a52", hana: "#6a4fa8", yui: "#a9a4c8", mei: "#2e2420", lia: "#3f8fd6", bruno: "#5a3a20", shin: "#16161c", tess: "#2f7a5a", sora: "#c9c4e0" };
+const GIRL: Record<Who, boolean> = { miki: true, ren: false, kai: false, hana: true, yui: true, mei: true, lia: true, bruno: false, shin: false, tess: true, sora: false };
 const Eye: React.FC<{ cx: number; iris: string; girl: boolean; look: number; side: -1 | 1 }> = ({ cx, iris, girl, look, side }) => (<g>
   <path d={`M${cx - 9} 114 Q${cx} 104 ${cx + 9} 114 Q${cx} 121 ${cx - 9} 114Z`} fill="#fff" />
   <circle cx={cx + look} cy={113.5} r={4.6} fill={iris} />
