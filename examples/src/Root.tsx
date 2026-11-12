@@ -9,6 +9,8 @@ import { SkillPromo, TOTAL_S as SKILL_TOTAL_S } from "./skill/SkillPromo";
 import { SelfFix, SELF_TOTAL_F } from "./selffix/SelfFix";
 import { CodeEdit, CE_TOTAL_F } from "./codeedit/CodeEdit";
 import { CoreanoGatos, CG_TOTAL_S } from "./coreano/CoreanoGatos";
+import { Internado, DRAMA_TOTAL_S } from "./drama/Internado";
+import { loadFont as loadCartoon } from "@remotion/google-fonts/Fredoka";
 import { loadFont as loadKorean } from "@remotion/google-fonts/NotoSansKR";
 import { BgMesh, Grade, Grain, Vignette } from "./components/Layers";
 import { Hook } from "./scenes/Hook";
@@ -24,6 +26,7 @@ if (!process.env.REMOTION_OFFLINE_FONTS) {
   loadMono();
   loadSerif();
   loadKorean();
+  loadCartoon();
 }
 
 const FPS = 30;
@@ -65,6 +68,14 @@ const Promo: React.FC = () => {
 
 export const Root: React.FC = () => (
   <>
+    <Composition
+      id="Internado"
+      component={Internado}
+      durationInFrames={Math.round(FPS * DRAMA_TOTAL_S)}
+      fps={FPS}
+      width={1080}
+      height={1920}
+    />
     <Composition
       id="CoreanoGatos"
       component={CoreanoGatos}

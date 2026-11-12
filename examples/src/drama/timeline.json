@@ -1,0 +1,218 @@
+{
+ "scenes": [
+  {
+   "id": "title",
+   "start": 0,
+   "end": 8.358,
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Primer día en el internado. Todos esperan la lista de habitaciones.",
+     "start": 3.0,
+     "dur": 4.508,
+     "audio": "drama/l0.wav"
+    }
+   ]
+  },
+  {
+   "id": "board",
+   "start": 8.358,
+   "end": 29.063,
+   "lines": [
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Nii-san! ¡Nii-san! ¡Nos tocó en la misma habitación!",
+     "start": 8.958,
+     "dur": 3.907,
+     "audio": "drama/l1.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Ya vi. No estoy ciego.",
+     "start": 13.215,
+     "dur": 1.949,
+     "audio": "drama/l2.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "angry",
+     "text": "¿Por qué te portas como un cubo de hielo conmigo?",
+     "fx": "ice",
+     "start": 15.514,
+     "dur": 2.552,
+     "audio": "drama/l3.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "talk",
+     "text": "¡Sí! ¿Por qué eres un cubo de hielo con tu hermana?",
+     "fx": "ice",
+     "start": 18.416,
+     "dur": 2.762,
+     "audio": "drama/l4.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Kai! ¿Cuándo llegaste?",
+     "start": 21.528,
+     "dur": 1.529,
+     "audio": "drama/l5.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Dejen la bienvenida. Vamos a la habitación.",
+     "start": 23.407,
+     "dur": 3.257,
+     "audio": "drama/l6.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Sí, ya vamos!",
+     "start": 27.015,
+     "dur": 1.199,
+     "audio": "drama/l7.wav"
+    }
+   ]
+  },
+  {
+   "id": "hall",
+   "start": 29.063,
+   "end": 40.24,
+   "lines": [
+    {
+     "who": "mei",
+     "mood": "happy",
+     "text": "¡Qué bien! ¡Nuestras habitaciones están cerquita!",
+     "start": 29.663,
+     "dur": 2.869,
+     "audio": "drama/l8.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "nervous",
+     "text": "Yo voy a estar con gente que no conozco...",
+     "start": 32.882,
+     "dur": 2.289,
+     "audio": "drama/l9.wav"
+    },
+    {
+     "who": "yui",
+     "mood": "happy",
+     "text": "Tranquila, Hana. Vas a hacer amigos muy rápido.",
+     "start": 35.521,
+     "dur": 3.869,
+     "audio": "drama/l10.wav"
+    }
+   ]
+  },
+  {
+   "id": "room",
+   "start": 40.24,
+   "end": 70.872,
+   "lines": [
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Hola! Tú debes ser nuestra compañera. Soy Miki.",
+     "start": 40.84,
+     "dur": 3.448,
+     "audio": "drama/l11.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Hola, soy Hana. Mucho gusto.",
+     "start": 44.638,
+     "dur": 2.46,
+     "audio": "drama/l12.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "¡Y yo soy Kai!",
+     "start": 47.448,
+     "dur": 0.952,
+     "audio": "drama/l13.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "talk",
+     "text": "¿Y tú cómo te llamas?",
+     "start": 48.75,
+     "dur": 1.235,
+     "audio": "drama/l14.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "Hmp.",
+     "start": 50.335,
+     "dur": 1.195,
+     "audio": "drama/l15.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "nervous",
+     "text": "Perdónalo, así es él. Es mi hermano Ren.",
+     "start": 51.88,
+     "dur": 3.248,
+     "audio": "drama/l16.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "Es de pocas palabras... cuando quiere.",
+     "start": 55.479,
+     "dur": 2.117,
+     "audio": "drama/l17.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "Cállate, Kai.",
+     "start": 57.946,
+     "dur": 1.375,
+     "audio": "drama/l18.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "laugh",
+     "text": "¡Wow! Articuló una frase.",
+     "start": 59.67,
+     "dur": 2.114,
+     "audio": "drama/l19.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "Ja, ja. La chica es graciosa... y una molestia.",
+     "fx": "exitRen",
+     "start": 62.134,
+     "dur": 4.553,
+     "audio": "drama/l20.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "nervous",
+     "text": "¡Ren, espérame! ¡No me dejes solo con ellas!",
+     "fx": "exitKai",
+     "start": 67.037,
+     "dur": 2.985,
+     "audio": "drama/l21.wav"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 70.872,
+   "end": 74.472,
+   "lines": []
+  }
+ ],
+ "total": 74.472
+}
