@@ -7,6 +7,7 @@ import {
 } from "remotion";
 import TL from "./timeline.json";
 import { Grain, Vignette } from "../components/Layers";
+import { FashionCharacter } from "./Fashion";
 
 // ---------------- theme ----------------
 const D = {
@@ -145,7 +146,7 @@ const Bubble: React.FC<{ line: Line; speakerX: number; sceneStart: number }> = (
   const out = interpolate(t, [end - 0.15, end], [1, 0], clamp);
   const tail = Math.max(120, Math.min(960, speakerX));
   return (
-    <div style={{ position: "absolute", left: 60, right: 60, top: 330, opacity: Math.min(1, p) * out,
+    <div style={{ position: "absolute", left: 60, right: 60, top: 150, opacity: Math.min(1, p) * out,
       transform: `translateY(${(1 - p) * 30}px) scale(${0.9 + 0.1 * p})`, transformOrigin: `${tail - 60}px 100%` }}>
       <div style={{ position: "relative", background: D.white, border: `6px solid ${D.ink}`, borderRadius: 44,
         padding: "48px 44px 40px", boxShadow: `0 10px 0 ${D.ink}` }}>
@@ -182,7 +183,7 @@ const BoardBG: React.FC<{ highlight: number }> = ({ highlight }) => {
     <rect width={1080} height={1920} fill="#ffe3b3" />
     <rect y={0} width={1080} height={120} fill="#ffcf85" />
     <Floor y={1420} color="#c98b5a" line="#b47a4c" />
-    <g transform="translate(140 700)">
+    <g transform="translate(140 560)">
       <rect width={800} height={560} rx={20} fill="#c98b5a" stroke={D.ink} strokeWidth={10} />
       <rect x={30} y={30} width={740} height={500} rx={10} fill="#e8b98a" />
       <g transform="rotate(-2 400 280)">
@@ -231,7 +232,7 @@ const IceCube: React.FC<{ x: number; y: number }> = ({ x, y }) => {
 
 // ---------------- scene runner ----------------
 type Spot = { who: Who; x: number; flip?: boolean };
-const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode; defaultMood?: Partial<Record<Who, Mood>>; size?: number }> = ({ scene, cast, bg, defaultMood = {}, size = 1.3 }) => {
+const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode; defaultMood?: Partial<Record<Who, Mood>>; size?: number }> = ({ scene, cast, bg, defaultMood = {}, size = 1.22 }) => {
   const { f, fps, t } = useT(); const tAbs = scene.start + t;
   const line = activeLine(scene.lines, tAbs);
   // camera: lean toward the speaker
@@ -256,9 +257,9 @@ const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode;
           const talking = !!line && line.who === c.who && tAbs < line.start + line.dur;
           let mood: Mood = lastSaid[c.who] ?? defaultMood[c.who] ?? "talk";
           if (ending && (c.who === "miki" || c.who === "hana") && scene.id === "room") mood = "laugh";
-          return <Character key={c.who} who={c.who} x={c.x + exitX(c.who)} y={1600} scale={size} mood={mood} talking={talking} flip={c.flip} enterDelay={i * 5} />;
+          return <FashionCharacter key={c.who} who={c.who} x={c.x + exitX(c.who)} y={1760} scale={size} mood={mood} talking={talking} flip={c.flip} enterDelay={i * 5} />;
         })}
-        {line?.fx === "ice" && <Sequence from={Math.round((line.start - scene.start) * fps)} layout="none"><IceCube x={cast.find((c) => c.who === "ren")!.x} y={1600 - 400 * size} /></Sequence>}
+        {line?.fx === "ice" && <Sequence from={Math.round((line.start - scene.start) * fps)} layout="none"><IceCube x={cast.find((c) => c.who === "ren")!.x} y={1760 - 790 * size} /></Sequence>}
       </AbsoluteFill>
       {scene.lines.map((l, i) => (
         <Sequence key={i} from={Math.round((l.start - scene.start) * fps)} durationInFrames={Math.round((l.dur + 0.35) * fps)} layout="none">
@@ -321,7 +322,7 @@ export const Internado: React.FC = () => {
       {seq("hall", <DialogueScene scene={by("hall")} bg={<HallBG />} defaultMood={{ hana: "nervous" }}
         cast={[{ who: "mei", x: 220 }, { who: "hana", x: 540 }, { who: "yui", x: 860, flip: true }]} />)}
       {seq("room", <DialogueScene scene={by("room")} bg={<RoomBG />} defaultMood={{ ren: "cold" }}
-        cast={[{ who: "hana", x: 190 }, { who: "miki", x: 430 }, { who: "kai", x: 670, flip: true }, { who: "ren", x: 900, flip: true }]} size={1.1} />)}
+        cast={[{ who: "hana", x: 190 }, { who: "miki", x: 430 }, { who: "kai", x: 670, flip: true }, { who: "ren", x: 900, flip: true }]} size={1.12} />)}
       {seq("end", <TitleCard scene={by("end")} top="Vida en el internado" big="Continuará..." sub="Capítulo 2 pronto" showNarr={false} />)}
       <Grain />
       <Vignette />
