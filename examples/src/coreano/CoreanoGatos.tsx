@@ -213,7 +213,7 @@ export const CoreanoGatos: React.FC = () => {
       <Sea />
       {parts.map((p, i) => { const at = from; from += p.d;
         return <Sequence key={i} from={at} durationInFrames={p.d}>{p.el(p.d)}</Sequence>; })}
-      <Audio src={staticFile("coreano-gatos.wav")} />
+      <Audio src={staticFile("coreano-gatos-voz.wav")} />
       <Grain />
       <Vignette />
     </AbsoluteFill>
