@@ -9,7 +9,7 @@ type Look = {
   skin: string; hair: string; hairStyle: "messy" | "swept" | "bun" | "bob" | "pony" | "waves";
   shirt: string; stripes?: string; jacket?: string; jacketLong?: boolean;
   bottom: "pants" | "shorts" | "skirt"; bottomColor: string; legs?: string;
-  shoes: string; boots?: boolean; scarf?: string; beanie?: string;
+  shoes: string; boots?: boolean; bow?: string; scarf?: string; beanie?: string;
 };
 export const LOOKS: Record<Who, Look> = {
   miki: { skin: "#f6d3b8", hair: "#3a2a2a", hairStyle: "bun", shirt: "#3a3550", stripes: "#c9475a", jacket: "#4f7a3a", jacketLong: true,
@@ -18,8 +18,8 @@ export const LOOKS: Record<Who, Look> = {
     bottom: "pants", bottomColor: "#26262e", shoes: "#4a3227" },
   kai: { skin: "#f3c6a0", hair: "#b8572e", hairStyle: "messy", shirt: "#2f8c84", jacket: "#9a5a2e",
     bottom: "pants", bottomColor: "#2f4a74", shoes: "#a8283a", boots: true },
-  hana: { skin: "#f8dcc6", hair: "#a98fd6", hairStyle: "waves", shirt: "#f4f1ea", jacket: undefined,
-    bottom: "pants", bottomColor: "#26355e", shoes: "#2a2a35", scarf: undefined },
+  hana: { skin: "#f8dcc6", hair: "#a98fd6", hairStyle: "waves", shirt: "#f7c6d9", jacket: "#fff4ea",
+    bottom: "skirt", bottomColor: "#e48fb4", shoes: "#c9566a", bow: "#ff6f9f" },
   yui: { skin: "#e8b48f", hair: "#5a3a26", hairStyle: "pony", shirt: "#9fb4c4", jacket: "#2f4c5c",
     bottom: "skirt", bottomColor: "#c9d6dc", legs: "#253a48", shoes: "#8a5a36", boots: true, scarf: "#5fc6cf" },
   mei: { skin: "#f5d0b5", hair: "#2a1d1d", hairStyle: "bob", shirt: "#f2c641", jacket: "#e6e3de",
@@ -175,6 +175,7 @@ export const FashionCharacter: React.FC<{
           <path d="M150 222 L150 430" stroke="rgba(0,0,0,.15)" strokeWidth={2} />
           <rect x={162} y={250} width={24} height={22} rx={3} fill="none" stroke="rgba(0,0,0,.18)" strokeWidth={2} />
           <path d="M170 196 L202 198 L194 446 L172 446Z" fill={shade} /></>}
+        {l.bow && <><path d="M126 192 Q150 214 174 192 L170 206 Q150 224 130 206Z" fill="#fff" /><path d="M86 588 Q96 600 106 588 T126 588 T146 588 T166 588 T186 588 T206 588 T214 590" stroke="#fff" strokeWidth={5} fill="none" /><path d="M120 452 L180 452" stroke={l.bow} strokeWidth={8} /></>}
         {l.scarf && <path d="M120 176 Q150 200 180 176 L184 200 Q150 226 116 200Z M168 200 L176 300 L158 296 L156 206Z" fill={l.scarf} />}
         {/* head */}
         <g transform={`rotate(${nod} 150 170)`}>
@@ -186,6 +187,7 @@ export const FashionCharacter: React.FC<{
           <Face who={who} mood={mood} talking={talking} blink={blink} open={open} look={Math.sin(t * 0.7 + seed) * 1.6 + (flip ? -1 : 1)} brow={l.hair} />
           <HairFront l={l} />
           <path d="M118 66 Q140 54 166 58 M126 76 Q146 64 172 70" stroke="rgba(255,255,255,.22)" strokeWidth={4} fill="none" strokeLinecap="round" />
+          {l.bow && <g transform="translate(184 60) rotate(20)"><path d="M0 0 L-18 -12 L-18 12Z M0 0 L18 -12 L18 12Z" fill={l.bow} /><circle r={5} fill={l.bow} /></g>}
           {l.beanie && <path d="M98 92 Q100 36 150 34 Q200 36 202 92Z" fill={l.beanie} />}
         </g>
         {/* front arm (gestures when talking) */}
