@@ -1,0 +1,307 @@
+{
+ "scenes": [
+  {
+   "id": "title",
+   "start": 0,
+   "end": 8.768,
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Ren y Kai se fueron. Hana y Miki se quedan solas en la habitación.",
+     "start": 3.0,
+     "dur": 4.918,
+     "audio": "drama/cap2/l0.wav"
+    }
+   ]
+  },
+  {
+   "id": "talk",
+   "start": 8.768,
+   "end": 46.188,
+   "lines": [
+    {
+     "who": "hana",
+     "mood": "nervous",
+     "text": "Se enojó...",
+     "start": 9.368,
+     "dur": 0.691,
+     "audio": "drama/cap2/l1.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Sí. Así es desde la muerte de nuestros padres... y de nuestro hermano mayor.",
+     "start": 10.409,
+     "dur": 4.54,
+     "audio": "drama/cap2/l2.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "nervous",
+     "text": "¿Qué les pasó?",
+     "start": 15.299,
+     "dur": 0.761,
+     "audio": "drama/cap2/l3.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "A mis padres los asesinaron. Y nuestro hermano murió en un accidente de auto hace tres años.",
+     "start": 16.41,
+     "dur": 6.006,
+     "audio": "drama/cap2/l4.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "sad",
+     "text": "Lo siento mucho. No puedo imaginar ese dolor.",
+     "start": 22.765,
+     "dur": 3.078,
+     "audio": "drama/cap2/l5.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Al principio dolió mucho. Desde entonces Ren se volvió frío y serio. Antes sonreía todo el tiempo.",
+     "start": 26.194,
+     "dur": 6.772,
+     "audio": "drama/cap2/l6.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Yo creo que su alegría se fue con ellos.",
+     "start": 33.315,
+     "dur": 2.376,
+     "audio": "drama/cap2/l7.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "talk",
+     "text": "Entonces él era alegre como tú... Pero el pasado se queda en el pasado.",
+     "start": 36.041,
+     "dur": 4.633,
+     "audio": "drama/cap2/l8.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "Tienes razón. Mejor vivo el presente y espero lo que traiga el futuro.",
+     "start": 41.025,
+     "dur": 4.314,
+     "audio": "drama/cap2/l9.wav"
+    }
+   ]
+  },
+  {
+   "id": "back",
+   "start": 46.188,
+   "end": 88.468,
+   "lines": [
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "¡Hola de nuevo, chicas!",
+     "enter": [
+      "kai"
+     ],
+     "start": 46.788,
+     "dur": 1.538,
+     "audio": "drama/cap2/l10.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Hola, Kai.",
+     "start": 48.676,
+     "dur": 1.021,
+     "audio": "drama/cap2/l11.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Kaaai!",
+     "move": {
+      "miki": 560
+     },
+     "start": 50.047,
+     "dur": 0.447,
+     "audio": "drama/cap2/l12.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "nervous",
+     "text": "¿Qué pasó, Miki? ¿Por qué me abrazas así de repente?",
+     "start": 50.844,
+     "dur": 3.249,
+     "audio": "drama/cap2/l13.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Hermano!",
+     "enter": [
+      "ren"
+     ],
+     "move": {
+      "miki": 780
+     },
+     "start": 54.443,
+     "dur": 0.606,
+     "audio": "drama/cap2/l14.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "¿Qué te pasa, Miki?",
+     "start": 55.399,
+     "dur": 1.673,
+     "audio": "drama/cap2/l15.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Nada! Solo quería demostrarles todo mi cariño.",
+     "move": {
+      "miki": 420
+     },
+     "start": 57.422,
+     "dur": 3.173,
+     "audio": "drama/cap2/l16.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "Oigan, ¿se olvidan de alguien que está aquí sentada?",
+     "start": 60.945,
+     "dur": 3.057,
+     "audio": "drama/cap2/l17.wav"
+    },
+    {
+     "who": "miki",
+     "mood": "nervous",
+     "with": "kai",
+     "text": "¡Sí, perdón!",
+     "start": 64.351,
+     "dur": 1.082,
+     "audio": "drama/cap2/l18.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "Eres una molestia.",
+     "start": 65.783,
+     "dur": 1.407,
+     "audio": "drama/cap2/l19.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "¿Qué dijiste, Ren?",
+     "start": 67.541,
+     "dur": 1.287,
+     "audio": "drama/cap2/l20.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "¿No entiendes español? Dije que eres una mo-les-tia.",
+     "start": 69.178,
+     "dur": 3.811,
+     "audio": "drama/cap2/l21.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "¡Ya verás!",
+     "move": {
+      "hana": 690,
+      "kai": 470,
+      "miki": 230
+     },
+     "pose": {
+      "hana": "fall",
+      "ren": "fall"
+     },
+     "start": 73.34,
+     "dur": 0.757,
+     "audio": "drama/cap2/l22.wav"
+    },
+    {
+     "who": "hana",
+     "mood": "blush",
+     "text": "¿Por qué mi corazón late tan rápido?",
+     "thought": true,
+     "fx": "hearts",
+     "start": 74.447,
+     "dur": 1.97,
+     "audio": "drama/cap2/l23.wav",
+     "moods": {
+      "ren": "blush"
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "blush",
+     "text": "L-lo siento...",
+     "pose": {
+      "hana": "stand",
+      "ren": "stand"
+     },
+     "move": {
+      "hana": 640
+     },
+     "fx": "hearts",
+     "start": 76.766,
+     "dur": 0.925,
+     "audio": "drama/cap2/l24.wav"
+    },
+    {
+     "who": "ren",
+     "mood": "blush",
+     "text": "N-no hay problema.",
+     "start": 78.041,
+     "dur": 1.308,
+     "audio": "drama/cap2/l25.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "Bueno, no pasó nada. No tienen por qué estar avergonzados...",
+     "start": 79.7,
+     "dur": 3.992,
+     "audio": "drama/cap2/l26.wav"
+    },
+    {
+     "who": "kai",
+     "mood": "nervous",
+     "text": "¡Auch! ¿Y por qué me pegan?",
+     "fx": "bonk",
+     "start": 84.042,
+     "dur": 1.769,
+     "audio": "drama/cap2/l27.wav",
+     "moods": {
+      "hana": "angry",
+      "ren": "angry"
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "with": "ren",
+     "text": "¡Por decir tonterías!",
+     "start": 86.161,
+     "dur": 1.457,
+     "audio": "drama/cap2/l28.wav"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 88.468,
+   "end": 92.068,
+   "lines": []
+  }
+ ],
+ "total": 92.068
+}

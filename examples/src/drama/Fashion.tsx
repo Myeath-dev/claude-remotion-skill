@@ -3,7 +3,7 @@ import React from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
 
 export type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei";
-export type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh";
+export type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh" | "sad" | "blush";
 
 type Look = {
   skin: string; hair: string; hairStyle: "messy" | "swept" | "bun" | "bob" | "pony" | "waves";
@@ -73,7 +73,7 @@ const Face: React.FC<{ who: Who; mood: Mood; talking: boolean; blink: boolean; o
     : <><Eye cx={134} iris={iris} girl={girl} look={look} side={-1} /><Eye cx={166} iris={iris} girl={girl} look={look} side={1} /></>;
   const bk = { stroke: brow, strokeWidth: 4, strokeLinecap: "round" as const, fill: "none" };
   const brows = mood === "angry" ? <path d="M123 97 L143 104M177 97 L157 104" {...bk} />
-    : mood === "nervous" ? <path d="M124 102 L143 96M176 102 L157 96" {...bk} />
+    : mood === "nervous" || mood === "sad" || mood === "blush" ? <path d="M124 102 L143 96M176 102 L157 96" {...bk} />
     : mood === "cold" ? <path d="M124 101 L144 100M156 100 L176 101" {...bk} />
     : <path d="M124 100 Q134 94 144 99M156 99 Q166 94 176 100" {...bk} />;
   const lip = girl ? "#c9566a" : "#a85a5a";
@@ -82,15 +82,18 @@ const Face: React.FC<{ who: Who; mood: Mood; talking: boolean; blink: boolean; o
     : mood === "laugh" ? <><path d="M137 138 Q150 156 163 138Z" fill="#7a2c38" /><path d="M140 139h20" stroke="#fff" strokeWidth={3} /></>
     : mood === "happy" || mood === "talk" ? <path d="M139 139 Q150 148 161 139" stroke={lip} strokeWidth={3.4} fill="none" strokeLinecap="round" />
     : mood === "angry" ? <path d="M140 145 Q150 139 160 145" stroke={lip} strokeWidth={3.4} fill="none" strokeLinecap="round" />
-    : mood === "nervous" ? <path d="M139 143 q5.5-4 11 0 t11 0" stroke={lip} strokeWidth={3} fill="none" strokeLinecap="round" />
+    : mood === "nervous" || mood === "blush" ? <path d="M139 143 q5.5-4 11 0 t11 0" stroke={lip} strokeWidth={3} fill="none" strokeLinecap="round" />
+    : mood === "sad" ? <path d="M141 146 Q150 140 159 146" stroke={lip} strokeWidth={3.2} fill="none" strokeLinecap="round" />
     : <path d="M142 142 Q150 144 158 142" stroke={lip} strokeWidth={3.2} fill="none" strokeLinecap="round" />;
   return (<>
-    <ellipse cx={124} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
-    <ellipse cx={176} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
+    <ellipse cx={124} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "blush" ? 0.95 : mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
+    <ellipse cx={176} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "blush" ? 0.95 : mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
+    {mood === "blush" && <path d="M116 128 l6 -6 M124 130 l6 -6 M170 128 l6 -6 M178 130 l6 -6" stroke="#e0607a" strokeWidth={2} />}
     {eyes}{brows}
     <path d="M151 116 Q147 128 149 131 Q152 133 156 131" stroke="rgba(130,70,50,.5)" strokeWidth={2.4} fill="none" strokeLinecap="round" />
     {girl && !talking && mood !== "laugh" && <path d="M143 146 Q150 149 157 146" stroke={lip} strokeWidth={2} fill="none" opacity={0.5} />}
     {mouth}
+    {mood === "sad" && <path d="M128 122 q3 8 0 12 q-3 -4 0 -12z" fill="#8fd3ff" opacity={0.8} />}
     {mood === "nervous" && <path d="M194 84 q7 12 0 18 q-7 -6 0 -18z" fill="#8fd3ff" />}
     {mood === "angry" && <path d="M188 70 l8 0 l0 -8 M200 62 l0 8 l8 0 M188 78 l8 0 l0 8 M200 86 l0 -8 l8 0" stroke="#e04848" strokeWidth={3.5} fill="none" strokeLinecap="round" />}
   </>);
@@ -115,8 +118,8 @@ const Arm: React.FC<{ side: -1 | 1; sleeve: string; skin: string; up: number; sw
 };
 
 export const FashionCharacter: React.FC<{
-  who: Who; x: number; y: number; scale?: number; mood: Mood; talking: boolean; flip?: boolean; enterDelay?: number;
-}> = ({ who, x, y, scale = 1, mood, talking, flip, enterDelay = 0 }) => {
+  who: Who; x: number; y: number; scale?: number; mood: Mood; talking: boolean; flip?: boolean; enterDelay?: number; tilt?: number;
+}> = ({ who, x, y, scale = 1, mood, talking, flip, enterDelay = 0, tilt = 0 }) => {
   const f = useCurrentFrame(); const { fps } = useVideoConfig(); const t = f / fps;
   const l = LOOKS[who];
   const enter = spring({ frame: f - enterDelay, fps, config: { damping: 18, stiffness: 120, mass: 0.8 } });
@@ -132,7 +135,7 @@ export const FashionCharacter: React.FC<{
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width={W * scale} height={H * scale} style={{
       position: "absolute", left: x - (W / 2) * scale, top: y - H * scale + (1 - enter) * 80, overflow: "visible",
-      opacity: Math.min(1, enter), transform: `scaleX(${flip ? -1 : 1})`,
+      opacity: Math.min(1, enter), transform: `rotate(${tilt}deg) scaleX(${flip ? -1 : 1})`, transformOrigin: "50% 98%",
     }}>
       <ellipse cx={150} cy={884} rx={86} ry={10} fill="#000" opacity={0.16} />
       <g transform={`rotate(${sway} 150 880) translate(150 0) scale(1.18 1) translate(-150 0)`}>

@@ -6,6 +6,7 @@ import {
   useCurrentFrame, useVideoConfig,
 } from "remotion";
 import TL from "./timeline.json";
+import TL2 from "./timeline-cap2.json";
 import { Grain, Vignette } from "../components/Layers";
 import { FashionCharacter } from "./Fashion";
 
@@ -20,10 +21,13 @@ const D = {
 };
 type Who = "miki" | "ren" | "kai" | "hana" | "yui" | "mei";
 type Mood = "happy" | "cold" | "angry" | "talk" | "nervous" | "laugh";
-type Line = { who: string; text: string; mood?: string; fx?: string; start: number; dur: number; audio: string };
+type Line = { who: string; text: string; mood?: string; fx?: string; start: number; dur: number; audio: string;
+  with?: string; thought?: boolean; enter?: string[]; move?: Record<string, number>; pose?: Record<string, string>; moods?: Record<string, string> };
 type Scene = { id: string; start: number; end: number; lines: Line[] };
 const SCENES = TL.scenes as Scene[];
 export const DRAMA_TOTAL_S: number = TL.total;
+const SCENES2 = TL2.scenes as Scene[];
+export const DRAMA2_TOTAL_S: number = TL2.total;
 
 const CAST: Record<Who, { name: string; hair: string; top: string; pants: string; tag: string }> = {
   miki: { name: "Miki", hair: "#2b2340", top: "#ff7eb6", pants: "#3d3a5c", tag: "#ff7eb6" },
@@ -148,10 +152,10 @@ const Bubble: React.FC<{ line: Line; speakerX: number; sceneStart: number }> = (
   return (
     <div style={{ position: "absolute", left: 60, right: 60, top: 150, opacity: Math.min(1, p) * out,
       transform: `translateY(${(1 - p) * 30}px) scale(${0.9 + 0.1 * p})`, transformOrigin: `${tail - 60}px 100%` }}>
-      <div style={{ position: "relative", background: D.white, border: `6px solid ${D.ink}`, borderRadius: 44,
+      <div style={{ position: "relative", background: line.thought ? "#fff0f6" : D.white, border: `6px ${line.thought ? "dashed" : "solid"} ${D.ink}`, borderRadius: line.thought ? 90 : 44, fontStyle: line.thought ? "italic" : "normal",
         padding: "48px 44px 40px", boxShadow: `0 10px 0 ${D.ink}` }}>
         <div style={{ position: "absolute", top: -32, left: 36, background: c.tag, color: D.white, border: `5px solid ${D.ink}`,
-          borderRadius: 24, padding: "4px 26px", fontFamily: D.font, fontWeight: 800, fontSize: 40 }}>{c.name}</div>
+          borderRadius: 24, padding: "4px 26px", fontFamily: D.font, fontWeight: 800, fontSize: 40 }}>{line.with ? `${c.name} y ${CAST[line.with as Who].name}` : c.name}{line.thought ? " (piensa)" : ""}</div>
         <div style={{ fontFamily: D.font, fontSize: 56, fontWeight: 700, color: D.ink, lineHeight: 1.2, minHeight: 136 }}>
           {line.text.slice(0, chars)}<span style={{ opacity: 0 }}>{line.text.slice(chars)}</span>
         </div>
@@ -231,15 +235,45 @@ const IceCube: React.FC<{ x: number; y: number }> = ({ x, y }) => {
 };
 
 // ---------------- scene runner ----------------
+const Hearts: React.FC<{ x: number; y: number }> = ({ x, y }) => {
+  const { t } = useT();
+  return (<>{[0, 1, 2, 3].map((i) => {
+    const p = (t * 0.7 + i * 0.25) % 1;
+    return <svg key={i} width={70} height={70} viewBox="0 0 40 40" style={{ position: "absolute", left: x - 35 + Math.sin(p * 9 + i) * 40 + (i - 1.5) * 30, top: y - p * 260, opacity: 1 - p, transform: `scale(${0.6 + p * 0.6})` }}>
+      <path d="M20 36 C6 26 2 18 2 12 C2 6 7 2 12 2 C16 2 19 5 20 8 C21 5 24 2 28 2 C33 2 38 6 38 12 C38 18 34 26 20 36Z" fill="#ff5c8a" /></svg>;
+  })}</>);
+};
+const Bonk: React.FC<{ x: number; y: number }> = ({ x, y }) => {
+  const { t } = useT();
+  return (<>{[0, 1, 2].map((i) => {
+    const a = t * 4 + (i * Math.PI * 2) / 3;
+    return <svg key={i} width={60} height={60} viewBox="0 0 40 40" style={{ position: "absolute", left: x - 30 + Math.cos(a) * 80, top: y - 30 + Math.sin(a) * 22 }}>
+      <path d="M20 2 L24 15 L38 15 L27 23 L31 37 L20 29 L9 37 L13 23 L2 15 L16 15Z" fill="#ffd23f" stroke="#1d1b2e" strokeWidth={2.5} /></svg>;
+  })}</>);
+};
+
 type Spot = { who: Who; x: number; flip?: boolean };
 const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode; defaultMood?: Partial<Record<Who, Mood>>; size?: number }> = ({ scene, cast, bg, defaultMood = {}, size = 1.22 }) => {
   const { f, fps, t } = useT(); const tAbs = scene.start + t;
   const line = activeLine(scene.lines, tAbs);
-  // camera: lean toward the speaker
+  const ease = (from: number, to: number, at: number, d = 0.5) => interpolate(tAbs, [at, at + d], [from, to], { ...clamp, easing: D.inOut });
+  // positions: base x, then each line's `move` slides the character there
+  const posX = (c: Spot) => { let x = c.x;
+    for (const l of scene.lines) if (l.move && l.move[c.who] !== undefined) x = ease(x, l.move[c.who], l.start + 0.1);
+    return x; };
+  // entrances: characters listed in a line's `enter` walk in from the right edge at that line
+  const enterLine = (who: Who) => scene.lines.find((l) => l.enter?.includes(who));
+  const enterOffset = (who: Who) => { const l = enterLine(who); return l ? ease(700, 0, l.start - 0.4, 0.7) : 0; };
+  // poses: "fall" tilts the character to the floor, "stand" brings them back
+  const tilt = (who: Who, flip?: boolean) => { let a = 0;
+    for (const l of scene.lines) { const p = l.pose?.[who]; if (!p) continue;
+      const target = p === "fall" ? (who === "ren" ? -4 : 6) : 0; a = ease(a, target, l.start + l.dur * 0.6, 0.35); }
+    return a; };
   const spk = line ? cast.find((c) => c.who === line.who) : undefined;
-  const target = spk ? (540 - spk.x) * 0.12 : 0;
-  const camX = interpolate(Math.sin(t * 0.6), [-1, 1], [-6, 6]) + target;
-  // exits
+  const target = spk ? (540 - posX(spk)) * 0.12 : 0;
+  const fallShake = scene.lines.some((l) => l.pose && Object.values(l.pose).includes("fall") && Math.abs(tAbs - (l.start + l.dur * 0.6 + 0.35)) < 0.25) ? Math.sin(t * 90) * 14 : 0;
+  const camX = interpolate(Math.sin(t * 0.6), [-1, 1], [-6, 6]) + target + fallShake;
+  // legacy chapter-1 exits
   const exitAt = (fx: string) => { const l = scene.lines.find((x) => x.fx === fx); return l ? l.start + l.dur * 0.6 - scene.start : Infinity; };
   const exitX = (who: Who) => {
     const at = who === "ren" ? exitAt("exitRen") : who === "kai" ? exitAt("exitKai") : Infinity;
@@ -247,23 +281,37 @@ const DialogueScene: React.FC<{ scene: Scene; cast: Spot[]; bg: React.ReactNode;
     return interpolate(t, [at, at + 0.8], [0, 900], { ...clamp, easing: D.inOut });
   };
   const lastSaid: Partial<Record<Who, Mood>> = {};
-  for (const l of scene.lines) if (l.start <= tAbs && l.mood) lastSaid[l.who as Who] = l.mood as Mood;
+  for (const l of scene.lines) if (l.start <= tAbs && l.mood) { lastSaid[l.who as Who] = l.mood as Mood; if (l.with) lastSaid[l.with as Who] = l.mood as Mood; }
+  for (const l of scene.lines) if (l.start <= tAbs && l.moods) for (const [w, m] of Object.entries(l.moods)) if (!scene.lines.some((k) => k.who === w && k.start > l.start && k.start <= tAbs)) lastSaid[w as Who] = m as Mood;
   const ending = scene.lines.length > 0 && tAbs > scene.lines[scene.lines.length - 1].start + 0.6;
+  // close-up while anyone is in a "fall" pose
+  const fallL = scene.lines.find((l) => l.pose && Object.values(l.pose).includes("fall"));
+  const standL = scene.lines.find((l) => l.pose && Object.values(l.pose).includes("stand"));
+  const zIn = fallL ? fallL.start + fallL.dur * 0.6 + 0.2 : Infinity;
+  const zOut = standL ? standL.start + standL.dur * 0.5 : Infinity;
+  const zoom = Number.isFinite(zIn) ? interpolate(tAbs, [zIn, zIn + 0.5, zOut, zOut + 0.5], [1, 2.1, 2.1, 1], { ...clamp, easing: D.inOut }) : 1;
+  const focus = fallL ? Object.keys(fallL.pose!) : [];
+  const xOf = (who: string) => { const c = cast.find((k) => k.who === who); return c ? posX(c) + enterOffset(c.who) : 540; };
   return (
     <AbsoluteFill>
+      <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: `${focus.length ? focus.reduce((a, w) => a + xOf(w), 0) / focus.length : 540}px ${1760 - 860 * size}px` }}>
       <AbsoluteFill style={{ transform: `translateX(${camX}px) scale(1.03)` }}>{bg}</AbsoluteFill>
       <AbsoluteFill style={{ transform: `translateX(${camX * 1.6}px)` }}>
         {cast.map((c, i) => {
-          const talking = !!line && line.who === c.who && tAbs < line.start + line.dur;
+          const el = enterLine(c.who); if (el && tAbs < el.start - 0.4) return null;
+          const talking = !!line && (line.who === c.who || line.with === c.who) && !line.thought && tAbs < line.start + line.dur;
           let mood: Mood = lastSaid[c.who] ?? defaultMood[c.who] ?? "talk";
           if (ending && (c.who === "miki" || c.who === "hana") && scene.id === "room") mood = "laugh";
-          return <FashionCharacter key={c.who} who={c.who} x={c.x + exitX(c.who)} y={1760} scale={size} mood={mood} talking={talking} flip={c.flip} enterDelay={i * 5} />;
+          return <FashionCharacter key={c.who} who={c.who} x={posX(c) + enterOffset(c.who) + exitX(c.who)} y={1760} scale={size} mood={mood} talking={talking} flip={c.flip} enterDelay={el ? Math.round((el.start - 0.4 - scene.start) * fps) : i * 5} tilt={tilt(c.who, c.flip)} />;
         })}
         {line?.fx === "ice" && <Sequence from={Math.round((line.start - scene.start) * fps)} layout="none"><IceCube x={cast.find((c) => c.who === "ren")!.x} y={1760 - 790 * size} /></Sequence>}
+        {line?.fx === "hearts" && <Hearts x={xOf(line.who)} y={1760 - 760 * size} />}
+        {line?.fx === "bonk" && <Bonk x={xOf(line.who)} y={1760 - 900 * size} />}
+      </AbsoluteFill>
       </AbsoluteFill>
       {scene.lines.map((l, i) => (
         <Sequence key={i} from={Math.round((l.start - scene.start) * fps)} durationInFrames={Math.round((l.dur + 0.35) * fps)} layout="none">
-          <Bubble line={l} speakerX={(cast.find((c) => c.who === l.who)?.x ?? 540) + camX * 1.6} sceneStart={l.start} />
+          <Bubble line={l} speakerX={xOf(l.who) + camX * 1.6} sceneStart={l.start} />
         </Sequence>
       ))}
       {scene.lines.map((l, i) => (
@@ -291,7 +339,7 @@ const TitleCard: React.FC<{ scene: Scene; top: string; big: string; sub: string;
     <div style={{ position: "absolute", top: 420, left: 0, right: 0, textAlign: "center", fontFamily: D.font, color: D.ink,
       opacity: Math.min(1, a), transform: `translateY(${(1 - a) * 40}px) rotate(${Math.sin(t * 2) * 1.2}deg)` }}>
       <div style={{ fontSize: 58, fontWeight: 700 }}>{top}</div>
-      <div style={{ fontSize: 132, fontWeight: 800, lineHeight: 1, color: "#fff", WebkitTextStroke: `6px ${D.ink}`, textShadow: `0 10px 0 ${D.ink}`, marginTop: 20 }}>{big}</div>
+      <div style={{ fontSize: Math.min(132, 1350 / big.length), fontWeight: 800, lineHeight: 1, color: "#fff", WebkitTextStroke: `6px ${D.ink}`, textShadow: `0 10px 0 ${D.ink}`, marginTop: 20 }}>{big}</div>
       <div style={{ display: "inline-block", marginTop: 40, background: D.ink, color: "#ffd23f", borderRadius: 30, padding: "10px 36px", fontSize: 50, fontWeight: 700 }}>{sub}</div>
     </div>
     {showNarr && scene.lines.map((l, i) => (
@@ -324,6 +372,24 @@ export const Internado: React.FC = () => {
       {seq("room", <DialogueScene scene={by("room")} bg={<RoomBG />} defaultMood={{ ren: "cold" }}
         cast={[{ who: "hana", x: 190 }, { who: "miki", x: 430 }, { who: "kai", x: 670, flip: true }, { who: "ren", x: 900, flip: true }]} size={1.12} />)}
       {seq("end", <TitleCard scene={by("end")} top="Vida en el internado" big="Continuará..." sub="Capítulo 2 pronto" showNarr={false} />)}
+      <Grain />
+      <Vignette />
+    </AbsoluteFill>
+  );
+};
+
+export const Internado2: React.FC = () => {
+  const { fps } = useVideoConfig();
+  const F = (s: number) => Math.round(s * fps);
+  const by = (id: string) => SCENES2.find((s) => s.id === id)!;
+  const seq = (id: string, el: React.ReactNode) => { const s = by(id); return <Sequence key={id} from={F(s.start)} durationInFrames={F(s.end - s.start)}>{el}</Sequence>; };
+  return (
+    <AbsoluteFill style={{ background: "#fff" }}>
+      {seq("title", <TitleCard scene={by("title")} top="Capítulo 2" big="Conociéndonos" sub="Parte 1" showNarr />)}
+      {seq("talk", <DialogueScene scene={by("talk")} bg={<RoomBG />} cast={[{ who: "hana", x: 330 }, { who: "miki", x: 750, flip: true }]} size={1.22} />)}
+      {seq("back", <DialogueScene scene={by("back")} bg={<RoomBG />} defaultMood={{ ren: "cold" }}
+        cast={[{ who: "hana", x: 200 }, { who: "miki", x: 420 }, { who: "kai", x: 660, flip: true }, { who: "ren", x: 890, flip: true }]} size={1.12} />)}
+      {seq("end", <TitleCard scene={by("end")} top="Vida en el internado" big="Continuará..." sub="Capítulo 3 pronto" showNarr={false} />)}
       <Grain />
       <Vignette />
     </AbsoluteFill>

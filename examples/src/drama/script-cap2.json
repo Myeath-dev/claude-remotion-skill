@@ -1,0 +1,243 @@
+{
+ "voices": {
+  "narr": {
+   "tld": "com.mx",
+   "semi": 0,
+   "tempo": 1.05
+  },
+  "miki": {
+   "tld": "com.mx",
+   "semi": 3.5,
+   "tempo": 1.12
+  },
+  "ren": {
+   "tld": "es",
+   "semi": -4,
+   "tempo": 1.0
+  },
+  "kai": {
+   "tld": "com.mx",
+   "semi": -1.5,
+   "tempo": 1.15
+  },
+  "hana": {
+   "tld": "us",
+   "semi": 1.5,
+   "tempo": 1.08
+  }
+ },
+ "scenes": [
+  {
+   "id": "title",
+   "pad": 3.0,
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Ren y Kai se fueron. Hana y Miki se quedan solas en la habitación."
+    }
+   ]
+  },
+  {
+   "id": "talk",
+   "pad": 0.6,
+   "lines": [
+    {
+     "who": "hana",
+     "mood": "nervous",
+     "text": "Se enojó..."
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Sí. Así es desde la muerte de nuestros padres... y de nuestro hermano mayor."
+    },
+    {
+     "who": "hana",
+     "mood": "nervous",
+     "text": "¿Qué les pasó?"
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "A mis padres los asesinaron. Y nuestro hermano murió en un accidente de auto hace tres años."
+    },
+    {
+     "who": "hana",
+     "mood": "sad",
+     "text": "Lo siento mucho. No puedo imaginar ese dolor."
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Al principio dolió mucho. Desde entonces Ren se volvió frío y serio. Antes sonreía todo el tiempo."
+    },
+    {
+     "who": "miki",
+     "mood": "sad",
+     "text": "Yo creo que su alegría se fue con ellos."
+    },
+    {
+     "who": "hana",
+     "mood": "talk",
+     "text": "Entonces él era alegre como tú... Pero el pasado se queda en el pasado."
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "Tienes razón. Mejor vivo el presente y espero lo que traiga el futuro."
+    }
+   ]
+  },
+  {
+   "id": "back",
+   "pad": 0.6,
+   "lines": [
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "¡Hola de nuevo, chicas!",
+     "enter": [
+      "kai"
+     ]
+    },
+    {
+     "who": "hana",
+     "mood": "happy",
+     "text": "Hola, Kai."
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Kaaai!",
+     "move": {
+      "miki": 560
+     }
+    },
+    {
+     "who": "kai",
+     "mood": "nervous",
+     "text": "¿Qué pasó, Miki? ¿Por qué me abrazas así de repente?"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Hermano!",
+     "enter": [
+      "ren"
+     ],
+     "move": {
+      "miki": 780
+     }
+    },
+    {
+     "who": "ren",
+     "mood": "cold",
+     "text": "¿Qué te pasa, Miki?"
+    },
+    {
+     "who": "miki",
+     "mood": "happy",
+     "text": "¡Nada! Solo quería demostrarles todo mi cariño.",
+     "move": {
+      "miki": 420
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "Oigan, ¿se olvidan de alguien que está aquí sentada?"
+    },
+    {
+     "who": "miki",
+     "mood": "nervous",
+     "with": "kai",
+     "text": "¡Sí, perdón!"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "Eres una molestia."
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "¿Qué dijiste, Ren?"
+    },
+    {
+     "who": "ren",
+     "mood": "angry",
+     "text": "¿No entiendes español? Dije que eres una mo-les-tia."
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "text": "¡Ya verás!",
+     "move": {
+      "hana": 690,
+      "kai": 470,
+      "miki": 230
+     },
+     "pose": {
+      "hana": "fall",
+      "ren": "fall"
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "blush",
+     "text": "¿Por qué mi corazón late tan rápido?",
+     "thought": true,
+     "fx": "hearts",
+     "moods": {
+      "ren": "blush"
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "blush",
+     "text": "L-lo siento...",
+     "pose": {
+      "hana": "stand",
+      "ren": "stand"
+     },
+     "move": {
+      "hana": 640
+     },
+     "fx": "hearts"
+    },
+    {
+     "who": "ren",
+     "mood": "blush",
+     "text": "N-no hay problema."
+    },
+    {
+     "who": "kai",
+     "mood": "happy",
+     "text": "Bueno, no pasó nada. No tienen por qué estar avergonzados..."
+    },
+    {
+     "who": "kai",
+     "mood": "nervous",
+     "text": "¡Auch! ¿Y por qué me pegan?",
+     "fx": "bonk",
+     "moods": {
+      "hana": "angry",
+      "ren": "angry"
+     }
+    },
+    {
+     "who": "hana",
+     "mood": "angry",
+     "with": "ren",
+     "text": "¡Por decir tonterías!"
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "pad": 0.4,
+   "tail": 3.2,
+   "lines": []
+  }
+ ]
+}
