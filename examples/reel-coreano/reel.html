@@ -1,0 +1,124 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#071a2b}
+#s{position:absolute;inset:0;font-family:"DejaVu Sans","WenQuanYi Zen Hei",sans-serif;color:#f4f1ea}
+.abs{position:absolute;left:0;right:0;text-align:center}
+.es{font-weight:900;font-size:92px;letter-spacing:-1px;line-height:1.05;text-transform:uppercase}
+.ko{font-family:"WenQuanYi Zen Hei";font-weight:700;font-size:230px;line-height:1}
+.pill{display:inline-block;border:3px solid currentColor;border-radius:22px;padding:6px 26px;font-size:46px;font-weight:700;opacity:.9}
+.sub{font-family:"WenQuanYi Zen Hei";font-size:48px;opacity:.85}
+.chunk{display:inline-block;margin:0 14px;text-align:center}
+</style></head><body><div id="s"></div>
+<script>
+const C={sea1:"#071a2b",sea2:"#0d3b52",text:"#f4f1ea",dim:"#9fb7c4",
+  boat:"#ffb347",pear:"#b8e05a",belly:"#ff8fa3",eat:"#7fd8ff",hurt:"#c7a2ff"};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const eo=x=>1-Math.pow(1-clamp(x),4);                 // ease-out
+const back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const ent=(t,t0,d=.35)=>back((t-t0)/d);                // pop entrance
+const ext=(t,t1,d=.18)=>1-eo((t-(t1-d))/d);            // fast exit
+
+// ---- SVG icons (original, simple) ----
+const ICON={
+ boat:`<svg viewBox="0 0 200 200"><path d="M100 30v90" stroke="#f4f1ea" stroke-width="8"/><path d="M104 36l56 70h-56z" fill="#f4f1ea"/><path d="M96 50l-46 56h46z" fill="#cfe3ec"/><path d="M30 125h140l-24 40H54z" fill="${C.boat}"/><path d="M20 178q20-12 40 0t40 0 40 0 40 0" stroke="#7fd8ff" stroke-width="8" fill="none"/></svg>`,
+ pear:`<svg viewBox="0 0 200 200"><path d="M100 40c-18 0-24 22-24 40-24 14-34 34-34 56 0 32 26 50 58 50s58-18 58-50c0-22-10-42-34-56 0-18-6-40-24-40z" fill="${C.pear}"/><path d="M100 42q4-20 14-26" stroke="#7a5230" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M110 30q26-12 36 6-22 10-36-6z" fill="#5fae3e"/><ellipse cx="76" cy="130" rx="12" ry="22" fill="#fff" opacity=".35"/></svg>`,
+ belly:`<svg viewBox="0 0 200 200"><circle cx="100" cy="108" r="72" fill="${C.belly}"/><circle cx="100" cy="112" r="8" fill="#b4566a"/><path d="M60 70q40-24 80 0" stroke="#fff" stroke-width="7" fill="none" opacity=".4" stroke-linecap="round"/></svg>`,
+ eat:`<svg viewBox="0 0 200 200"><path d="M100 40c-18 0-24 22-24 40-24 14-34 34-34 56 0 32 26 50 58 50s58-18 58-50c0-22-10-42-34-56 0-18-6-40-24-40z" fill="${C.pear}"/><circle cx="152" cy="118" r="26" fill="#071a2b"/><circle cx="140" cy="146" r="20" fill="#071a2b"/><circle cx="148" cy="92" r="16" fill="#071a2b"/></svg>`,
+ hurt:`<svg viewBox="0 0 200 200"><circle cx="100" cy="112" r="66" fill="${C.belly}"/><path d="M70 100l14 10-14 10M130 100l-14 10 14 10" stroke="#5a2330" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M78 148q22-16 44 0" stroke="#5a2330" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M164 34l-14 26h18l-16 30" stroke="${C.hurt}" stroke-width="9" fill="none" stroke-linejoin="round"/><path d="M36 40l10 22M24 76l20 6" stroke="${C.hurt}" stroke-width="9" stroke-linecap="round"/></svg>`
+};
+// ---- cat mascot ----
+const catHead=(mood,cx=100,cy=100,s=1)=>{
+ const eyes=mood==="hurt"?`<path d="M-30 -6l14 8-14 8M30 -6l-14 8 14 8" stroke="#3a2416" stroke-width="6" fill="none" stroke-linecap="round"/>`
+  :mood==="eat"?`<path d="M-32 0q10-12 20 0M12 0q10-12 20 0" stroke="#3a2416" stroke-width="6" fill="none" stroke-linecap="round"/>`
+  :`<circle cx="-22" cy="0" r="9" fill="#3a2416"/><circle cx="22" cy="0" r="9" fill="#3a2416"/><circle cx="-19" cy="-3" r="3" fill="#fff"/><circle cx="25" cy="-3" r="3" fill="#fff"/>`;
+ const mouth=mood==="hurt"?`<path d="M-12 30q12-10 24 0" stroke="#3a2416" stroke-width="5" fill="none" stroke-linecap="round"/>`
+  :mood==="eat"?`<ellipse cx="0" cy="28" rx="12" ry="10" fill="#7a2e3a"/>`
+  :`<path d="M-12 22q6 8 12 0q6 8 12 0" stroke="#3a2416" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+ return `<g transform="translate(${cx} ${cy}) scale(${s})">
+  <path d="M-58 -20L-50 -78L-14 -50Z" fill="#f2a65a"/><path d="M58 -20L50 -78L14 -50Z" fill="#f2a65a"/>
+  <path d="M-48 -32L-46 -64L-24 -48Z" fill="#ffc9b9"/><path d="M48 -32L46 -64L24 -48Z" fill="#ffc9b9"/>
+  <ellipse cx="0" cy="0" rx="66" ry="58" fill="#f2a65a"/>
+  <path d="M-14 -56q14 10 28 0M-8 -44q8 6 16 0" stroke="#d9823a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <ellipse cx="-38" cy="18" rx="12" ry="8" fill="#ff8fa3" opacity=".6"/><ellipse cx="38" cy="18" rx="12" ry="8" fill="#ff8fa3" opacity=".6"/>
+  ${eyes}<path d="M-6 12h12l-6 7z" fill="#e0607a"/>${mouth}
+  <path d="M-46 14h-30M-46 22l-28 8M46 14h30M46 22l28 8" stroke="#3a2416" stroke-width="3" stroke-linecap="round" opacity=".6"/></g>`};
+const pearShape=`<path d="M0 -60c-18 0-24 22-24 40-24 14-34 34-34 56 0 32 26 50 58 50s58-18 58-50c0-22-10-42-34-56 0-18-6-40-24-40z" fill="${C.pear}"/><path d="M0 -58q4-20 14-26" stroke="#7a5230" stroke-width="8" fill="none"/>`;
+Object.assign(ICON,{
+ cat:`<svg viewBox="0 0 200 200">${catHead("happy",100,110,1.3)}</svg>`,
+ catboat:`<svg viewBox="0 0 200 200"><path d="M100 10v80" stroke="#f4f1ea" stroke-width="6"/><path d="M104 14l46 60h-46z" fill="#f4f1ea"/>${catHead("happy",72,98,.7)}<path d="M20 120h160l-24 40H44z" fill="${C.boat}"/><path d="M10 178q20-12 40 0t40 0 40 0 40 0 40 0" stroke="#7fd8ff" stroke-width="8" fill="none"/></svg>`,
+ cateat:`<svg viewBox="0 0 200 200">${catHead("eat",80,110,1)}<g transform="translate(160 120) scale(.5)">${pearShape}<circle cx="-50" cy="10" r="22" fill="#071a2b"/></g></svg>`,
+ cathurt:`<svg viewBox="0 0 200 200">${catHead("hurt",100,90,.95)}<ellipse cx="100" cy="170" rx="46" ry="26" fill="#f2a65a"/><circle cx="100" cy="172" r="5" fill="#b4566a"/><path d="M168 20l-14 26h18l-16 30" stroke="${C.hurt}" stroke-width="9" fill="none" stroke-linejoin="round"/><path d="M28 30l10 22M18 66l20 6" stroke="${C.hurt}" stroke-width="9" stroke-linecap="round"/></svg>`});
+const icon=(k,size,t,t0,x=540,y=1150)=>{const p=ent(t,t0,.45),f=Math.sin(t*2.4)*10;
+ return `<div style="position:absolute;left:${x-size/2}px;top:${y-size/2+f}px;width:${size}px;height:${size}px;opacity:${clamp(p)};transform:scale(${.4+.6*p}) rotate(${Math.sin(t*1.7)*4}deg)">${ICON[k]}</div>`};
+
+// ---- data ----
+const WORDS=[
+ {es:"Barco",ko:"배",ro:"be",c:C.boat,i:"boat"},
+ {es:"Pera",ko:"배",ro:"be",c:C.pear,i:"pear"},
+ {es:"Barriga",ko:"배",ro:"be",c:C.belly,i:"belly"},
+ {es:"Comer",ko:"먹다",ro:"mok-da",c:C.eat,i:"cateat"},
+ {es:"Doler",ko:"아프다",ro:"a-pu-da",c:C.hurt,i:"cathurt"}];
+const STORY=[
+ {es:["El gato sube a un ","barco","."],c:C.boat,ko:"고양이가 배에 탔어.",i:"catboat"},
+ {es:["Se come una ","pera","."],c:C.pear,ko:"배를 먹었어.",i:"cateat"},
+ {es:["¡Y le duele la ","barriga","!"],c:C.belly,ko:"배가 아파!",i:"cathurt"}];
+const FINAL=[
+ {ko:"배에서",ro:"be-e-so",es:"en el barco",c:C.boat},
+ {ko:"배를 먹어서",ro:"be-rul mo-go-so",es:"comió pera y",c:C.pear},
+ {ko:"배가 아파요",ro:"be-ga a-pa-yo",es:"le duele la barriga",c:C.belly}];
+
+// ---- timeline (seconds) ----
+const T={hook:0,vocab:2.6,per:1.8,diEsto:11.6,story:13.2,sp:2.1,final:19.6,fp:1.7,cta:26.2,end:28.5};
+
+function bg(t){const w=(o,a,c)=>{let d="M0 "+o;for(let x=0;x<=1080;x+=40)d+=` L${x} ${o+Math.sin(x/140+t*1.3+a)*22}`;return `<path d="${d} L1080 1920 L0 1920Z" fill="${c}"/>`};
+ return `<svg class="abs" style="top:0" width="1080" height="1920"><defs><radialGradient id="g" cx=".5" cy=".3" r=".9"><stop offset="0" stop-color="${C.sea2}"/><stop offset="1" stop-color="${C.sea1}"/></radialGradient></defs><rect width="1080" height="1920" fill="url(#g)"/>${w(1560,0,"#0b2e44")}${w(1640,2,"#0a2638")}${w(1730,4,"#081f30")}</svg>`}
+
+function title(html,t,t0,t1,top=200,size=92){const p=ent(t,t0),q=ext(t,t1);
+ return `<div class="abs es" style="top:${top+(1-p)*40}px;font-size:${size}px;opacity:${clamp(p)*q};transform:scale(${.92+.08*p})">${html}</div>`}
+function koBlock(w,t,t0,t1,top=420){const p=ent(t,t0,.4),q=ext(t,t1);
+ return `<div class="abs" style="top:${top}px;opacity:${clamp(p)*q};transform:translateY(${(1-p)*50}px) scale(${.7+.3*p})"><div class="ko" style="color:${w.c};text-shadow:0 0 60px ${w.c}55">${w.ko}</div><div style="margin-top:22px;color:${w.c}"><span class="pill">${w.ro}</span></div></div>`}
+
+function frame(t){let h=bg(t);
+ if(t<T.vocab){ // HOOK
+  h+=title(`¿Una palabra,<br><span style="color:${C.pear}">tres cosas?</span>`,t,.1,T.vocab,230,104);
+  h+=`<div class="abs sub" style="top:500px;opacity:${clamp(ent(t,.5))*ext(t,T.vocab)}">한 단어, 세 가지 뜻?</div>`;
+  h+=koBlock({ko:"배",ro:"be",c:C.text},t,.9,T.vocab,640);
+  h+=icon("cat",440,t,1.2,540,1320);
+ } else if(t<T.diEsto){ // VOCAB
+  const i=Math.min(4,Math.floor((t-T.vocab)/T.per)),w=WORDS[i],t0=T.vocab+i*T.per,t1=t0+T.per;
+  h+=title(w.es,t,t0,t1,240);
+  h+=`<div class="abs" style="top:350px"><div style="margin:0 auto;height:6px;width:${140*eo((t-t0)/.3)}px;background:${w.c};border-radius:3px"></div></div>`;
+  h+=koBlock(w,t,t0+.55,t1,450);
+  h+=icon(w.i,420,t,t0+.1,540,1260);
+  h+=`<div class="abs" style="top:1640px;font-size:38px;color:${C.dim};opacity:${ext(t,t1)}">${i+1} / 5</div>`;
+ } else if(t<T.story){ // DI ESTO
+  h+=title(`A ver,<br><span style="color:${C.eat}">di esto.</span>`,t,T.diEsto,T.story,600,130);
+  h+=`<div class="abs sub" style="top:920px;opacity:${clamp(ent(t,T.diEsto+.3))*ext(t,T.story)}">자, 따라 해 봐.</div>`;
+ } else if(t<T.final){ // STORY
+  const i=Math.min(2,Math.floor((t-T.story)/T.sp)),s=STORY[i],t0=T.story+i*T.sp,t1=t0+T.sp;
+  h+=title(`${s.es[0]}<span style="color:${s.c}">${s.es[1]}</span>${s.es[2]}`,t,t0,t1,250,84);
+  h+=`<div class="abs sub" style="top:470px;color:${s.c};opacity:${clamp(ent(t,t0+.3))*ext(t,t1)}">${s.ko}</div>`;
+  h+=icon(s.i,520,t,t0+.15,540,1050);
+ } else if(t<T.cta){ // FINAL karaoke
+  const act=Math.min(2,Math.floor((t-T.final-.5)/T.fp));
+  h+=title(`¡Ahora todo junto!`,t,T.final,T.cta,200,78);
+  FINAL.forEach((f,k)=>{const on=(t-T.final-.5)>=k*T.fp,cur=k===act&&on,p=ent(t,T.final+.2+k*.12);
+   const top=480+k*300;
+   h+=`<div class="abs" style="top:${top}px;opacity:${clamp(p)*ext(t,T.cta)*(on?1:.35)};transform:scale(${cur?1.08:1})">
+    <div style="font-family:'WenQuanYi Zen Hei';font-weight:700;font-size:120px;color:${on?f.c:C.text}">${f.ko}</div>
+    <div style="font-size:40px;color:${on?f.c:C.dim}"><span class="pill" style="font-size:38px">${f.ro}</span></div>
+    <div style="font-size:36px;color:${C.dim};margin-top:10px">${f.es}</div></div>`});
+  const ic=["catboat","cateat","cathurt"];
+  if(t>T.final+.5) h+=icon(ic[act],300,t,T.final+.5+act*T.fp,540,1500);
+ } else { // CTA
+  h+=title(`¿Lo dijiste<br>sin <span style="color:${C.belly}">trabarte?</span>`,t,T.cta,T.end+1,560,110);
+  h+=`<div class="abs" style="top:900px;font-size:56px;opacity:${clamp(ent(t,T.cta+.4))}">Escríbelo en coreano ↓</div>`;
+  h+=`<div class="abs" style="top:1020px;font-family:'WenQuanYi Zen Hei';font-size:64px;color:${C.pear};opacity:${clamp(ent(t,T.cta+.7))}">배에서 배를 먹어서 배가 아파요</div>`;
+  h+=icon("catboat",460,t,T.cta+1,540,1420);
+ }
+ // vignette
+ h+=`<div class="abs" style="top:0;height:1920px;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55))"></div>`;
+ document.getElementById('s').innerHTML=h;}
+window.frame=frame;window.TOTAL=T.end;frame(0);
+</script></body></html>

@@ -8,6 +8,8 @@ import { FocusCatPromo, FTOTAL_S } from "./focuscat/FocusCat";
 import { SkillPromo, TOTAL_S as SKILL_TOTAL_S } from "./skill/SkillPromo";
 import { SelfFix, SELF_TOTAL_F } from "./selffix/SelfFix";
 import { CodeEdit, CE_TOTAL_F } from "./codeedit/CodeEdit";
+import { CoreanoGatos, CG_TOTAL_S } from "./coreano/CoreanoGatos";
+import { loadFont as loadKorean } from "@remotion/google-fonts/NotoSansKR";
 import { BgMesh, Grade, Grain, Vignette } from "./components/Layers";
 import { Hook } from "./scenes/Hook";
 import { Bio } from "./scenes/Bio";
@@ -18,6 +20,7 @@ loadDisplay();
 loadBody();
 loadMono();
 loadSerif();
+loadKorean();
 
 const FPS = 30;
 
@@ -58,6 +61,14 @@ const Promo: React.FC = () => {
 
 export const Root: React.FC = () => (
   <>
+    <Composition
+      id="CoreanoGatos"
+      component={CoreanoGatos}
+      durationInFrames={Math.round(FPS * CG_TOTAL_S)}
+      fps={FPS}
+      width={1080}
+      height={1920}
+    />
     <Composition
       id="HaidrrrryPromo"
       component={Promo}
