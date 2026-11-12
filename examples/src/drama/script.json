@@ -12,7 +12,7 @@
   {"id":"title","pad":3.0,"lines":[
    {"who":"narr","text":"Primer día en el internado. Todos esperan la lista de habitaciones."}]},
   {"id":"board","pad":0.6,"lines":[
-   {"who":"miki","mood":"happy","text":"¡Nii-san! ¡Nii-san! ¡Nos tocó en la misma habitación!"},
+   {"who":"miki","mood":"happy","text":"¡Hermano! ¡Hermano! ¡Nos tocó en la misma habitación!"},
    {"who":"ren","mood":"cold","text":"Ya vi. No estoy ciego."},
    {"who":"miki","mood":"angry","text":"¿Por qué te portas como un cubo de hielo conmigo?","fx":"ice"},
    {"who":"kai","mood":"talk","text":"¡Sí! ¿Por qué eres un cubo de hielo con tu hermana?","fx":"ice"},

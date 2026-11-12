@@ -50,28 +50,49 @@ const HairFront: React.FC<{ l: Look }> = ({ l }) => {
   }
 };
 
-const Face: React.FC<{ mood: Mood; talking: boolean; blink: boolean; open: number }> = ({ mood, talking, blink, open }) => {
-  const ink = "#2a2030";
+const IRIS: Record<Who, string> = { miki: "#3b2a22", ren: "#1e2333", kai: "#3f7a52", hana: "#6a4fa8", yui: "#5a3a26", mei: "#2e2420" };
+const GIRL: Record<Who, boolean> = { miki: true, ren: false, kai: false, hana: true, yui: true, mei: true };
+const Eye: React.FC<{ cx: number; iris: string; girl: boolean; look: number; side: -1 | 1 }> = ({ cx, iris, girl, look, side }) => (<g>
+  <path d={`M${cx - 9} 114 Q${cx} 104 ${cx + 9} 114 Q${cx} 121 ${cx - 9} 114Z`} fill="#fff" />
+  <circle cx={cx + look} cy={113.5} r={4.6} fill={iris} />
+  <circle cx={cx + look} cy={113.5} r={2.2} fill="#120c14" />
+  <circle cx={cx + look + 1.6} cy={111.6} r={1.3} fill="#fff" />
+  <path d={`M${cx - 10} 114 Q${cx} 102 ${cx + 10} 113`} stroke="#2a2030" strokeWidth={girl ? 3.4 : 2.6} fill="none" strokeLinecap="round" />
+  {girl && <path d={`M${cx + side * 9} 112 l${side * 5} -4 M${cx + side * 6} 108.5 l${side * 3.5} -4.5`} stroke="#2a2030" strokeWidth={2} strokeLinecap="round" />}
+  <path d={`M${cx - 7} 119.5 Q${cx} 122 ${cx + 7} 119.5`} stroke="rgba(120,70,60,.35)" strokeWidth={1.5} fill="none" />
+</g>);
+
+const Face: React.FC<{ who: Who; mood: Mood; talking: boolean; blink: boolean; open: number; look: number; brow: string }> = ({ who, mood, talking, blink, open, look, brow }) => {
+  const ink = "#2a2030"; const girl = GIRL[who]; const iris = IRIS[who];
   const k = { stroke: ink, strokeWidth: 3, strokeLinecap: "round" as const, fill: "none" };
-  const eyes = blink ? <><path d="M128 114h12M160 114h12" {...k} /></>
-    : mood === "happy" || mood === "laugh" ? <><path d="M127 116 Q134 108 141 116" {...k} /><path d="M159 116 Q166 108 173 116" {...k} /></>
-    : mood === "cold" ? <><path d="M127 113h14M159 113h14" {...k} /><ellipse cx={134} cy={116} rx={4} ry={2.5} fill={ink} /><ellipse cx={166} cy={116} rx={4} ry={2.5} fill={ink} /></>
-    : <><ellipse cx={134} cy={114} rx={4} ry={5} fill={ink} /><ellipse cx={166} cy={114} rx={4} ry={5} fill={ink} /></>;
-  const brows = mood === "angry" ? <><path d="M124 100 L142 106M176 100 L158 106" {...k} /></>
-    : mood === "nervous" ? <><path d="M124 104 L142 99M176 104 L158 99" {...k} /></>
-    : <><path d="M125 101 Q134 97 142 101M158 101 Q166 97 175 101" {...k} /></>;
-  const mouth = talking ? <ellipse cx={150} cy={142} rx={7 + open * 2} ry={2 + open * 6} fill="#8a3a42" />
-    : mood === "laugh" ? <path d="M138 138 Q150 154 162 138Z" fill="#8a3a42" />
-    : mood === "happy" || mood === "talk" ? <path d="M140 140 Q150 147 160 140" {...k} stroke="#9a4a4a" />
-    : mood === "angry" ? <path d="M141 145 Q150 139 159 145" {...k} stroke="#9a4a4a" />
-    : mood === "nervous" ? <path d="M140 143 q5-4 10 0 t10 0" {...k} stroke="#9a4a4a" />
-    : <path d="M143 142h14" {...k} stroke="#9a4a4a" />;
+  const eyes = blink ? <><path d="M125 115 Q134 119 143 115M157 115 Q166 119 175 115" {...k} /></>
+    : mood === "happy" || mood === "laugh" ? <><path d="M125 117 Q134 107 143 117" {...k} /><path d="M157 117 Q166 107 175 117" {...k} /></>
+    : mood === "cold" ? <><Eye cx={134} iris={iris} girl={girl} look={look} side={-1} /><Eye cx={166} iris={iris} girl={girl} look={look} side={1} />
+        <path d="M124 110 Q134 107 144 110 L144 113 L124 113Z M156 110 Q166 107 176 110 L176 113 L156 113Z" fill={LOOKS[who].skin} />
+        <path d="M124 112h20M156 112h20" {...k} strokeWidth={2.6} /></>
+    : <><Eye cx={134} iris={iris} girl={girl} look={look} side={-1} /><Eye cx={166} iris={iris} girl={girl} look={look} side={1} /></>;
+  const bk = { stroke: brow, strokeWidth: 4, strokeLinecap: "round" as const, fill: "none" };
+  const brows = mood === "angry" ? <path d="M123 97 L143 104M177 97 L157 104" {...bk} />
+    : mood === "nervous" ? <path d="M124 102 L143 96M176 102 L157 96" {...bk} />
+    : mood === "cold" ? <path d="M124 101 L144 100M156 100 L176 101" {...bk} />
+    : <path d="M124 100 Q134 94 144 99M156 99 Q166 94 176 100" {...bk} />;
+  const lip = girl ? "#c9566a" : "#a85a5a";
+  const mouth = talking ? <><path d={`M${142 - open * 2} 141 Q150 ${139 + open * 12} ${158 + open * 2} 141 Q150 137 ${142 - open * 2} 141Z`} fill="#7a2c38" />
+        <path d={`M${144 - open} 141.5 Q150 ${141 + open * 4} ${156 + open} 141.5`} stroke="#fff" strokeWidth={2} fill="none" opacity={0.8} /></>
+    : mood === "laugh" ? <><path d="M137 138 Q150 156 163 138Z" fill="#7a2c38" /><path d="M140 139h20" stroke="#fff" strokeWidth={3} /></>
+    : mood === "happy" || mood === "talk" ? <path d="M139 139 Q150 148 161 139" stroke={lip} strokeWidth={3.4} fill="none" strokeLinecap="round" />
+    : mood === "angry" ? <path d="M140 145 Q150 139 160 145" stroke={lip} strokeWidth={3.4} fill="none" strokeLinecap="round" />
+    : mood === "nervous" ? <path d="M139 143 q5.5-4 11 0 t11 0" stroke={lip} strokeWidth={3} fill="none" strokeLinecap="round" />
+    : <path d="M142 142 Q150 144 158 142" stroke={lip} strokeWidth={3.2} fill="none" strokeLinecap="round" />;
   return (<>
+    <ellipse cx={124} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
+    <ellipse cx={176} cy={132} rx={11} ry={6} fill="#ff8fa3" opacity={mood === "happy" || mood === "laugh" ? 0.5 : 0.22} />
     {eyes}{brows}
-    <path d="M150 118 Q147 130 152 132" stroke="rgba(120,60,40,.45)" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+    <path d="M151 116 Q147 128 149 131 Q152 133 156 131" stroke="rgba(130,70,50,.5)" strokeWidth={2.4} fill="none" strokeLinecap="round" />
+    {girl && !talking && mood !== "laugh" && <path d="M143 146 Q150 149 157 146" stroke={lip} strokeWidth={2} fill="none" opacity={0.5} />}
     {mouth}
-    {(mood === "happy" || mood === "laugh") && <><ellipse cx={124} cy={130} rx={9} ry={5} fill="#ff8fa3" opacity={0.45} /><ellipse cx={176} cy={130} rx={9} ry={5} fill="#ff8fa3" opacity={0.45} /></>}
-    {mood === "nervous" && <path d="M194 86 q7 12 0 18 q-7 -6 0 -18z" fill="#8fd3ff" />}
+    {mood === "nervous" && <path d="M194 84 q7 12 0 18 q-7 -6 0 -18z" fill="#8fd3ff" />}
+    {mood === "angry" && <path d="M188 70 l8 0 l0 -8 M200 62 l0 8 l8 0 M188 78 l8 0 l0 8 M200 86 l0 -8 l8 0" stroke="#e04848" strokeWidth={3.5} fill="none" strokeLinecap="round" />}
   </>);
 };
 
@@ -122,9 +143,16 @@ export const FashionCharacter: React.FC<{
         {l.bottom === "shorts" && <path d="M104 430 L196 430 L200 540 L154 540 L150 500 L146 540 L100 540Z" fill={l.bottomColor} />}
         {l.bottom === "skirt" && <path d="M108 430 L192 430 L214 590 L86 590Z" fill={l.bottomColor} />}
         {l.bottom === "skirt" && <path d="M160 430 L192 430 L214 590 L170 590Z" fill={shade} />}
+        {l.bottom === "pants" && <><path d="M134 456 L134 836 M168 456 L166 836" stroke="rgba(255,255,255,.14)" strokeWidth={2} strokeDasharray="6 5" />
+          <path d="M112 452 Q122 476 138 470 M188 452 Q178 476 162 470" stroke="rgba(0,0,0,.25)" strokeWidth={2.5} fill="none" />
+          <path d="M150 452 L149 520" stroke="rgba(0,0,0,.3)" strokeWidth={2.5} /></>}
+        {l.bottom === "shorts" && <path d="M104 532 L148 532 M152 532 L200 532" stroke="rgba(255,255,255,.35)" strokeWidth={3} strokeDasharray="4 4" />}
+        {l.bottom === "skirt" && <path d="M130 440 L120 586 M150 440 L150 588 M170 440 L182 586" stroke="rgba(0,0,0,.12)" strokeWidth={3} />}
         {/* shoes / boots */}
         {l.boots ? <><path d="M116 740 L148 740 L150 862 L106 866 Q104 850 116 846Z" fill={l.shoes} /><path d="M154 740 L184 740 L190 846 Q200 852 196 866 L152 862Z" fill={l.shoes} /></>
           : <><path d="M114 836 L146 836 L148 864 L98 868 Q98 850 114 846Z" fill={l.shoes} /><path d="M156 836 L182 836 L186 846 Q204 852 202 868 L154 864Z" fill={l.shoes} /></>}
+        <path d="M98 866 L150 862 L150 870 L96 872Z M152 862 L202 866 L204 872 L152 870Z" fill="rgba(0,0,0,.45)" />
+        {l.boots && <path d="M116 760 L148 760 M154 760 L184 760" stroke="rgba(255,255,255,.2)" strokeWidth={4} />}
         {/* back arm */}
         <Arm side={1} sleeve={sleeve} skin={l.skin} up={0} swing={-sway} />
         {/* torso */}
@@ -132,24 +160,32 @@ export const FashionCharacter: React.FC<{
         <path d="M98 198 Q150 182 202 198 L194 446 L106 446Z" fill={l.shirt} />
         {l.stripes && [0, 1, 2, 3, 4, 5].map((i) => <rect key={i} x={104} y={226 + i * 36} width={92} height={13} fill={l.stripes} />)}
         {l.bottom === "pants" && <rect x={106} y={430} width={88} height={22} fill={l.bottomColor} />}
-        {l.bottom === "pants" && <rect x={108} y={436} width={84} height={6} fill="#2a2030" opacity={0.5} />}
+        {l.bottom === "pants" && <><rect x={106} y={432} width={88} height={12} fill="#3a2a22" /><rect x={142} y={430} width={16} height={16} rx={2} fill="none" stroke="#d9b45a" strokeWidth={3} /></>}
         {l.jacket && <>
           <path d={`M92 198 Q118 184 136 200 L132 ${l.jacketLong ? 600 : 470} L94 ${l.jacketLong ? 600 : 470} Q86 330 92 198Z`} fill={l.jacket} />
           <path d={`M208 198 Q182 184 164 200 L168 ${l.jacketLong ? 600 : 470} L206 ${l.jacketLong ? 600 : 470} Q214 330 208 198Z`} fill={l.jacket} />
           <path d={`M180 200 L168 ${l.jacketLong ? 600 : 470} L206 ${l.jacketLong ? 600 : 470} Q214 330 208 198Z`} fill={shade} />
           <path d="M136 200 L118 196 L132 262Z M164 200 L182 196 L168 262Z" fill="rgba(0,0,0,.22)" />
+          <path d="M100 330 L128 330 M172 330 L200 330" stroke="rgba(0,0,0,.2)" strokeWidth={3} />
+          {[300, 360, 420].map((yy) => <circle key={yy} cx={130} cy={yy} r={4} fill="rgba(0,0,0,.3)" />)}
+          <path d="M96 210 Q94 330 98 460" stroke="rgba(255,255,255,.15)" strokeWidth={4} fill="none" />
         </>}
-        {!l.jacket && <><path d="M134 192 L150 220 L166 192 L158 186 L150 204 L142 186Z" fill="rgba(255,255,255,.35)" />
+        {!l.jacket && <><path d="M128 190 L150 222 L172 190 L162 184 L150 204 L138 184Z" fill="rgba(255,255,255,.35)" />
+          {[240, 290, 340, 390].map((yy) => <circle key={yy} cx={150} cy={yy} r={3.5} fill="rgba(255,255,255,.7)" />)}
+          <path d="M150 222 L150 430" stroke="rgba(0,0,0,.15)" strokeWidth={2} />
+          <rect x={162} y={250} width={24} height={22} rx={3} fill="none" stroke="rgba(0,0,0,.18)" strokeWidth={2} />
           <path d="M170 196 L202 198 L194 446 L172 446Z" fill={shade} /></>}
         {l.scarf && <path d="M120 176 Q150 200 180 176 L184 200 Q150 226 116 200Z M168 200 L176 300 L158 296 L156 206Z" fill={l.scarf} />}
         {/* head */}
         <g transform={`rotate(${nod} 150 170)`}>
           <HairBack l={l} />
           <ellipse cx={150} cy={112} rx={42} ry={52} fill={l.skin} />
-          <ellipse cx={108} cy={118} rx={7} ry={11} fill={l.skin} /><ellipse cx={192} cy={118} rx={7} ry={11} fill={l.skin} />
+          <ellipse cx={108} cy={118} rx={7} ry={11} fill={l.skin} /><ellipse cx={192} cy={118} rx={7} ry={11} fill={l.skin} /><path d="M106 112 q4 6 0 12M194 112 q-4 6 0 12" stroke="rgba(140,80,60,.4)" strokeWidth={2} fill="none" />
+          <path d="M112 128 Q118 160 150 166 Q182 160 188 128 Q186 156 150 172 Q114 156 112 128Z" fill="rgba(140,80,60,.12)" />
           <path d="M168 66 Q196 92 186 150 Q172 164 158 162 Q186 120 168 66Z" fill={shade} opacity={0.6} />
-          <Face mood={mood} talking={talking} blink={blink} open={open} />
+          <Face who={who} mood={mood} talking={talking} blink={blink} open={open} look={Math.sin(t * 0.7 + seed) * 1.6 + (flip ? -1 : 1)} brow={l.hair} />
           <HairFront l={l} />
+          <path d="M118 66 Q140 54 166 58 M126 76 Q146 64 172 70" stroke="rgba(255,255,255,.22)" strokeWidth={4} fill="none" strokeLinecap="round" />
           {l.beanie && <path d="M98 92 Q100 36 150 34 Q200 36 202 92Z" fill={l.beanie} />}
         </g>
         {/* front arm (gestures when talking) */}
