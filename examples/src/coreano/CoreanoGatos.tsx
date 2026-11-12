@@ -9,7 +9,7 @@ const K = {
   sea1: "#071a2b", sea2: "#0d3b52", text: "#f4f1ea", dim: "#9fb7c4",
   boat: "#ffb347", pear: "#b8e05a", belly: "#ff8fa3", eat: "#7fd8ff", hurt: "#c7a2ff",
   cat: "#f2a65a", catDark: "#d9823a", ink: "#3a2416",
-  display: "Space Grotesk, sans-serif", ko: "'Noto Sans KR', 'WenQuanYi Zen Hei', sans-serif",
+  display: "'Space Grotesk', 'DejaVu Sans', sans-serif", ko: "'Noto Sans KR', 'WenQuanYi Zen Hei', sans-serif",
   out: Easing.bezier(0.16, 1, 0.3, 1),
   pop: { damping: 11, stiffness: 170, mass: 0.7 },
 };

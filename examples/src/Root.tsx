@@ -16,11 +16,15 @@ import { Bio } from "./scenes/Bio";
 import { Ships } from "./scenes/Ships";
 import { CTA } from "./scenes/CTA";
 
-loadDisplay();
-loadBody();
-loadMono();
-loadSerif();
-loadKorean();
+// Set REMOTION_OFFLINE_FONTS=1 to skip Google Fonts (e.g. sandboxes where the
+// renderer's browser cannot reach fonts.gstatic.com); system fonts are used instead.
+if (!process.env.REMOTION_OFFLINE_FONTS) {
+  loadDisplay();
+  loadBody();
+  loadMono();
+  loadSerif();
+  loadKorean();
+}
 
 const FPS = 30;
 
